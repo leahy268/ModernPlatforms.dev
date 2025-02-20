@@ -5,6 +5,7 @@ import { PostConnection } from "@/tina/__generated__/types";
 import { TopPosts } from "../../app/posts/page";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
 import type { Template } from "tinacms";
+import Link from "next/link";
 
 export default function LatestPosts({ numPosts = 4 }: { numPosts?: number }) {
   const [data, setData] = useState<PostConnection | null>(null);
@@ -36,8 +37,12 @@ export default function LatestPosts({ numPosts = 4 }: { numPosts?: number }) {
     <div className="max-w-6xl mx-auto px-4">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {data.edges.map((post, index) => (
-          <div key={index} className="p-4 bg-white rounded-lg shadow flex items-start gap-4">
-            {/* Small Hero Image (Top Left) */}
+          <Link
+            key={post.node.id}
+            href={`/posts/` + post.node._sys.breadcrumbs.join("/")}
+            className="group block p-4 bg-white rounded-lg shadow flex items-start gap-4 transition hover:shadow-lg"
+          >
+            {/* Small Hero Image (Clickable) */}
             {post.node.heroImg && (
               <img
                 src={post.node.heroImg}
@@ -45,39 +50,36 @@ export default function LatestPosts({ numPosts = 4 }: { numPosts?: number }) {
                 className="w-16 h-16 object-cover rounded-md"
               />
             )}
-  
-            {/* Post Details */}
+
+            {/* Post Details (Clickable) */}
             <div className="flex-1">
               {/* Category Label */}
               <div className="bg-black text-white text-xs font-bold px-3 py-1 rounded-full w-fit">
                 {post.node.category || "Uncategorized"}
               </div>
-  
+
               {/* Title */}
-              <h4 className="text-lg font-semibold mt-2">{post.node.title}</h4>
-  
+              <h4 className="text-lg font-semibold mt-2 group-hover:text-blue-500">
+                {post.node.title}
+              </h4>
+
               {/* Excerpt (Fixed: Use TinaMarkdown for rich text) */}
               {post.node.excerpt && (
                 <div className="text-gray-600 text-sm mt-2 line-clamp-5">
                   <TinaMarkdown content={post.node.excerpt} />
                 </div>
               )}
-  
-              {/* Read More Link */}
-              <a
-                href={`/posts/${post.node._sys.filename}`}
-                className="text-blue-500 mt-2 inline-block"
-              >
+
+              {/* Read More → (Optional: Hover Effect) */}
+              <p className="mt-2 text-blue-500 group-hover:underline">
                 Read More →
-              </a>
+              </p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
   );
-  
-  
 }
 
 // TinaCMS block schema for Latest Posts

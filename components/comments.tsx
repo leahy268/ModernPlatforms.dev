@@ -2,14 +2,14 @@
  
 import Giscus from '@giscus/react';
  
-const Comments = ({ repo, repoId, category, categoryId }) => {
+const Comments = ({ repo, repoId, category, categoryId, datamapping }) => {
 	return (
 		<Giscus
 			repo={repo}
 			repoId={repoId}
 			category={category}
 			categoryId={categoryId}
-			mapping="pathname"
+			mapping={datamapping}
 			reactionsEnabled="1"
 			emitMetadata="0"
 			inputPosition="top"

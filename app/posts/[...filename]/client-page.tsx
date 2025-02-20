@@ -9,7 +9,7 @@ import { useLayout } from "@/components/layout/layout-context";
 import { Section } from "@/components/layout/section";
 import { Container } from "@/components/layout/container";
 import { components } from "@/components/mdx-components";
-
+import Comments from "@/components/comments"; // ✅ Import Comments component
 
 
 const titleColorClasses = {
@@ -32,13 +32,20 @@ interface ClientPostProps {
     relativePath: string;
   };
   query: string;
+  giscusConfig: {
+    repo: string;
+    repoId: string;
+    category: string;
+    categoryId: string;
+    datamapping: string;
+  };
 }
 
 export default function PostClientPage(props: ClientPostProps) {
   const { theme } = useLayout();
   const { data } = useTina({ ...props });
   const post = data.post;
-
+  const giscusConfig = props.giscusConfig; 
   const date = new Date(post.date);
   const category = post.category;
   let formattedDate = "";
@@ -144,6 +151,17 @@ export default function PostClientPage(props: ClientPostProps) {
             {category}
           </p>
         </div>
+      </Container>
+      {/* ✅ Comments Section (Added Here) */}
+      <Container width="small" className="flex-1 pt-6" size="large">
+        <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300">💬 Join the Discussion</h3>
+        <Comments
+          repo={giscusConfig.repo}
+          repoId={giscusConfig.repoId}
+          category={giscusConfig.category}
+          categoryId={giscusConfig.categoryId}
+          datamapping={giscusConfig.datamapping}
+        />
       </Container>
     </Section>
   );

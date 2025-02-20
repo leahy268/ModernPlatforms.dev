@@ -23,7 +23,7 @@ const lato = Lato({
 });
 
 export const metadata: Metadata = {
-  title: "ModernPlafroms.Dev",
+  title: "ModernPlatforms.Dev",
   description: "A developer’s guide to modern platforms, covering DevOps, cloud, automation, best practices.",
 };
 

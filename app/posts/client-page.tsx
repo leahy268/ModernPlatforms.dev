@@ -32,7 +32,6 @@ interface ClientPostProps {
 export default function PostsClientPage(props: ClientPostProps) {
   const { data } = useTina({ ...props });
   const { theme } = useLayout();
-
   return (
     <>
       {data?.postConnection.edges.map((postData) => {

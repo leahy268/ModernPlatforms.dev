@@ -12,9 +12,16 @@ export default async function PostPage({
     relativePath: `${params.filename.join("/")}.mdx`,
   });
 
+
   return (
     <Layout rawPageData={data}>
-      <PostClientPage {...data} />
+      <PostClientPage giscusConfig={{
+        repo: process.env.COMMENTS_REPO,
+        repoId: process.env.COMMENTS_REPO_ID,
+        category: process.env.COMMENTS_CATEGORY,
+        categoryId: process.env.COMMENT_CATEGORY_ID,
+        datamapping: process.env.COMMENT_DATA_MAPPING,
+      }} {...data} />
     </Layout>
   );
 }
