@@ -23,8 +23,8 @@ const lato = Lato({
 });
 
 export const metadata: Metadata = {
-  title: "SysAdmin Tips and Tricks",
-  description: "Modern SysAdmin tips and tricks for the modern cloud world.",
+  title: "ModernPlafroms.Dev",
+  description: "A developer’s guide to modern platforms, covering DevOps, cloud, automation, best practices.",
 };
 
 export default async function RootLayout({
