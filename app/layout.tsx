@@ -23,8 +23,8 @@ const lato = Lato({
 });
 
 export const metadata: Metadata = {
-  title: "Tina",
-  description: "Tina Cloud Starter",
+  title: "SysAdmin Tips and Tricks",
+  description: "Modern SysAdmin tips and tricks for the modern cloud world.",
 };
 
 export default async function RootLayout({

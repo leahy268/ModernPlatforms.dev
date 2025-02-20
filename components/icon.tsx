@@ -4,26 +4,67 @@ import React from "react";
 import { useLayout } from "./layout/layout-context";
 
 export const IconOptions = {
-  Tina: (props) => (
+  SysAdmin: (props) => (
     <svg
-      {...props}
-      viewBox="0 0 66 80"
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      width="32"
+      height="32"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="lucide lucide-server"
+      {...props} // Allow passing props like `className`
     >
-      <title>Tina</title>
-      <path
-        d="M39.4615 36.1782C42.763 33.4475 44.2259 17.3098 45.6551 11.5091C47.0843 5.70828 52.995 6.0025 52.995 6.0025C52.995 6.0025 51.4605 8.67299 52.0864 10.6658C52.7123 12.6587 57 14.4401 57 14.4401L56.0752 16.8781C56.0752 16.8781 54.1441 16.631 52.995 18.9297C51.8459 21.2283 53.7336 43.9882 53.7336 43.9882C53.7336 43.9882 46.8271 57.6106 46.8271 63.3621C46.8271 69.1136 49.5495 73.9338 49.5495 73.9338H45.7293C45.7293 73.9338 40.1252 67.2648 38.9759 63.9318C37.8266 60.5988 38.2861 57.2658 38.2861 57.2658C38.2861 57.2658 32.1946 56.921 26.7931 57.2658C21.3915 57.6106 17.7892 62.2539 17.1391 64.8512C16.4889 67.4486 16.2196 73.9338 16.2196 73.9338H13.1991C11.3606 68.2603 9.90043 66.2269 10.6925 63.3621C12.8866 55.4269 12.4557 50.9263 11.9476 48.9217C11.4396 46.9172 8 45.1676 8 45.1676C9.68492 41.7349 11.4048 40.0854 18.8029 39.9133C26.201 39.7413 36.1599 38.9088 39.4615 36.1782Z"
-        fill="currentColor"
-      />
-      <path
-        d="M20.25 63.03C20.25 63.03 21.0305 70.2533 25.1773 73.9342H28.7309C25.1773 69.9085 24.7897 59.415 24.7897 59.415C22.9822 60.0035 20.4799 62.1106 20.25 63.03Z"
-        fill="currentColor"
-      />
+      <title>SysAdminTipsandTricks</title>
+      <desc>Lots of tips for the modern sysadmin</desc>
+      <rect width="20" height="8" x="2" y="2" rx="2" ry="2"></rect>
+      <rect width="20" height="8" x="2" y="14" rx="2" ry="2"></rect>
+      <line x1="6" x2="6.01" y1="6" y2="6"></line>
+      <line x1="6" x2="6.01" y1="18" y2="18"></line>
     </svg>
   ),
-  ...BoxIcons,
+
+  ModernPlatforms: (props) => (
+    <svg
+      width="100"
+      height="100"
+      viewBox="0 0 100 100"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props} // Pass props for styling
+    >
+      <title>ModernPlatforms</title>
+      <desc>A Dev's guide to modern platforms</desc>
+      <rect width="100" height="100" rx="15" fill="none" />
+      {/* Cloud (Shifted Left by 5 units) */}
+      <path
+        d="M25 60 C15 60, 15 40, 35 40 
+          C40 25, 65 25, 70 40 
+          C85 40, 85 60, 70 60 
+          Z"
+        fill="none"
+        stroke="white"
+        strokeWidth="5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        />
+       {/* Stacked Platform Layers  */}
+      <rect x="30" y="65" width="40" height="6" fill="white" rx="2"/>
+      <rect x="27" y="73" width="46" height="6" fill="white" rx="2"/>
+      <rect x="24" y="81" width="52" height="6" fill="white" rx="2"/>
+
+   {/* Subtle Code Brackets  */}
+  <path d="M20 70 L15 75 L20 80" stroke="white" strokeWidth="3" strokeLinecap="round"/>
+  <path d="M80 70 L85 75 L80 80" stroke="white" strokeWidth="3" strokeLinecap="round"/>
+    </svg>
+  ),
+
+  ...BoxIcons, // Ensure BoxIcons is defined and contains valid SVG components
 };
+
 
 const iconColorClass: {
   [name: string]: { regular: string; circle: string };

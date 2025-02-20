@@ -1,12 +1,12 @@
 {
   "header": {
     "icon": {
-      "name": "Tina",
-      "color": "orange",
+      "name": "ModernPlatforms",
+      "color": "white",
       "style": "float"
     },
-    "name": "Tina Starter",
-    "color": "default",
+    "name": "ModernPlatforms.Dev",
+    "color": "primary",
     "nav": [
       {
         "href": "",
@@ -24,6 +24,10 @@
   },
   "footer": {
     "color": "default",
+    "summary": {
+      "title": "ModernPlatforms.Dev",
+      "description": "ModernPlatforms.dev is a blog dedicated to exploring modern technology stacks and platform engineering. We cover topics like DevOps, GitHub, Azure, Power Platform, Power BI, and more—helping you navigate the evolving landscape of cloud-native development and automation."
+    },
     "social": {
       "facebook": "",
       "twitter": "https://x.com/TinaCMS",
@@ -36,6 +40,6 @@
   "theme": {
     "color": "blue",
     "font": "sans",
-    "darkMode": "light"
+    "darkMode": "dark"
   }
 }

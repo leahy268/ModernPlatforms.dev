@@ -1,5 +1,6 @@
 import type { Collection } from "tinacms";
 import { heroBlockSchema } from "@/components/blocks/hero";
+import { latestPostsBlockSchema } from "@/components/blocks/top-posts";
 import { contentBlockSchema } from "@/components/blocks/content";
 import { testimonialBlockSchema } from "@/components/blocks/testimonial";
 import { featureBlockSchema } from "@/components/blocks/features";
@@ -42,6 +43,7 @@ const Page: Collection = {
         featureBlockSchema,
         contentBlockSchema,
         testimonialBlockSchema,
+        latestPostsBlockSchema,
         videoBlockSchema,
       ],
     },

@@ -76,6 +76,32 @@ const Global: Collection = {
         },
         {
           type: "object",
+          label: "Summary",
+          name: "summary",
+          ui: {
+            itemProps: (item) => {
+              return { label: item?.title };
+            },
+            defaultItem: {
+              title: "Modern Platforms",
+              summary: "A blogsite for modern platforms",
+            },
+          },
+          fields: [
+            {
+              type: "string",
+              label: "Title",
+              name: "title",
+            },
+            {
+              type: "string",
+              label: "Description",
+              name: "description",
+            },
+          ],
+        },
+        {
+          type: "object",
           label: "Social Links",
           name: "social",
           fields: [

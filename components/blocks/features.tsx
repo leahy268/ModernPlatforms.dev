@@ -1,4 +1,4 @@
-"use client";
+
 import {
   PageBlocksFeatures,
   PageBlocksFeaturesItems,
@@ -20,7 +20,7 @@ export const Feature = ({
   return (
     <div
       data-tina-field={tinaField(data)}
-      className="flex-1 flex flex-col gap-6 text-center items-center lg:items-start lg:text-left max-w-xl mx-auto"
+      className="flex-1 flex flex-col gap-6 text-center items-center lg:items-start lg:text-left max-w-xl gap-5"
       style={{ flexBasis: "16rem" }}
     >
       {data.icon && (

@@ -10,6 +10,8 @@ import { Section } from "@/components/layout/section";
 import { Container } from "@/components/layout/container";
 import { components } from "@/components/mdx-components";
 
+
+
 const titleColorClasses = {
   blue: "from-blue-400 to-blue-600 dark:from-blue-300 dark:to-blue-500",
   teal: "from-teal-400 to-teal-600 dark:from-teal-300 dark:to-teal-500",
@@ -38,6 +40,7 @@ export default function PostClientPage(props: ClientPostProps) {
   const post = data.post;
 
   const date = new Date(post.date);
+  const category = post.category;
   let formattedDate = "";
   if (!isNaN(date.getTime())) {
     formattedDate = format(date, "MMM dd, yyyy");
@@ -130,6 +133,16 @@ export default function PostClientPage(props: ClientPostProps) {
               ...components,
             }}
           />
+        </div>
+      </Container>
+      <Container width="small" className={`flex-1 pt-4`} size="large">
+        <div className="flex items-center justify-center mb-16">
+          <p
+            data-tina-field={tinaField(post, "category")}
+            className="text-base font-medium text-gray-600 group-hover:text-gray-800 dark:text-gray-200 dark:group-hover:text-white"
+          >
+            {category}
+          </p>
         </div>
       </Container>
     </Section>
