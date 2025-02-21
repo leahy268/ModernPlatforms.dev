@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { PostConnection } from "@/tina/__generated__/types";
-import { TopPosts } from "../../app/posts/page";
+import TopPosts  from "../../app/posts/topposts";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
 import type { Template } from "tinacms";
 import Link from "next/link";
