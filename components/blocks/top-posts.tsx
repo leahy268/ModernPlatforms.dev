@@ -36,7 +36,7 @@ export default function LatestPosts({ numPosts = 4 }: { numPosts?: number }) {
   return (
     <div className="max-w-6xl mx-auto px-4">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {data.edges.map((post, index) => (
+        {data.edges.map((post) => (
           <Link
             key={post.node.id}
             href={`/posts/` + post.node._sys.breadcrumbs.join("/")}

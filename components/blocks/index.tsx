@@ -6,10 +6,6 @@ import { Features } from "./features";
 import { Testimonial } from "./testimonial";
 import { Video } from "./video";
 import LatestPosts  from "./top-posts";
-// import { TopPosts } from "../../app/posts/page";
-import { Suspense } from "react";
-
-
 
 export const Blocks = (props: Omit<Page, "id" | "_sys" | "_values">) => {
   return (

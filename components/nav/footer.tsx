@@ -13,13 +13,21 @@ import {
 import { AiFillInstagram } from "react-icons/ai";
 import { useLayout } from "../layout/layout-context";
 
+const footerColor = {
+  default: "bg-[#202938] text-white",
+  primary: "bg-[#202938] text-white",
+};
+
 export default function Footer() {
   const { globalSettings, theme } = useLayout();
   const footer = globalSettings?.footer || {};
-  const footerColor = "bg-[#202938] text-gray-300";
+
+  const footerColorCss =
+    theme?.darkMode === "primary" ? footerColor.primary : footerColor.default;
+  
 
   return (
-    <footer className={cn(footerColor)}> {/* Reduced padding */}
+    <footer className={cn(footerColorCss)}> {/* Reduced padding */}
       <Container className="relative max-w-6xl mx-auto py-4" size="custom">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start"> {/* Aligned text to top */}
           {/* Left Section (Takes Up 2 Columns, Text Aligned to Top) */}
