@@ -16,9 +16,9 @@ export default function NavItems({ navs }: { navs: any }) {
           <Link
             data-tina-field={tinaField(item, "label")}
             href={`/${item.href}`}
-            className={`text-white text-sm sm:text-base font-medium px-2 py-1 
-                        transition duration-150 ease-out hover:opacity-80
-                        ${currentPath === `/${item.href}` ? "border-b-2 border-blue-300 pb-1" : ""}`}
+            className={`text-white text-sm sm:text-base font-medium px-2 py-1 transition duration-150 ease-out hover:opacity-80 
+              ${currentPath === `/${item.href}` ? "border-b-2 border-blue-300 pb-1" : ""}
+              group-hover:text-${theme.color}-600 dark:group-hover:text-${theme.color}-300`}
           >
             {item.label}
           </Link>

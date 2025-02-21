@@ -48,6 +48,8 @@ export default function LatestPosts({ numPosts = 4 }: { numPosts?: number }) {
               <Image
                 src={post.node.heroImg}
                 alt={post.node.title}
+                width={50}
+                height={50}
                 className="w-16 h-16 object-cover rounded-md"
               />
             )}
