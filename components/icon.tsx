@@ -37,7 +37,7 @@ export const IconOptions = {
       {...props} // Pass props for styling
     >
       <title>ModernPlatforms</title>
-      <desc>A Dev's guide to modern platforms</desc>
+      <desc>A Dev&apos;s guide to modern platforms</desc>
       <rect width="100" height="100" rx="15" fill="none" />
       {/* Cloud (Shifted Left by 5 units) */}
       <path

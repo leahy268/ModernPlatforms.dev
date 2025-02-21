@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { PostConnection } from "@/tina/__generated__/types";
 import { TopPosts } from "../../app/posts/page";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
@@ -44,7 +45,7 @@ export default function LatestPosts({ numPosts = 4 }: { numPosts?: number }) {
           >
             {/* Small Hero Image (Clickable) */}
             {post.node.heroImg && (
-              <img
+              <Image
                 src={post.node.heroImg}
                 alt={post.node.title}
                 className="w-16 h-16 object-cover rounded-md"
