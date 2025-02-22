@@ -1,96 +1,88 @@
 ---
-title: Testing CICD with Microsoft Syphony
-category: Cloud Automation
-heroImg: /uploads/images/microsoft-symphony-hero.jpg
-excerpt: >
-  Microsoft Symphony is an open-source framework designed to simplify
-  large-scale distributed workflows. Learn how it enables better orchestration,
-  scheduling, and execution of cloud workloads.
-author: ''
-date: 2025-02-19T10:00:00.000Z
+title: "Testing IAC (Bicep) with Microsoft Symphony"
+category: "Cloud Automation"
+heroImg: "/images/microsoft-symphony-hero.jpg"
+author: "your-author-id"
+date: "2025-02-19T10:00:00"
+excerpt: |
+  Testing IAC is always a problem. Waiting for a full deployment to occur before discovering bugs is a time-consuming process. Using Microsoft Symphony, we can validate Bicep code early and avoid unnecessary delays.
 ---
 
-## What is Microsoft Symphony?
+## Why Test Bicep with Microsoft Symphony?
 
-[Microsoft Symphony](https://github.com/microsoft/symphony) is an **open-source framework** that helps developers and enterprises **orchestrate and execute large-scale distributed workflows** efficiently. Built by Microsoft, it simplifies **workflow scheduling, task execution, and resource management** across distributed systems.
+Infrastructure as Code (IAC) brings automation and consistency to cloud deployments, but testing can be a challenge. Bicep, Microsoft's DSL for Azure Resource Manager, helps simplify infrastructure definitions. However, without proper validation, teams often run into deployment issues that could have been caught earlier. This is where Microsoft Symphony can help.
 
-Unlike traditional workflow engines, Symphony is designed to **scale dynamically** based on workload demands, making it an ideal solution for **cloud automation, AI training pipelines, data processing tasks, and DevOps workflows**.
+Symphony allows you to orchestrate and execute workflows that automate validation, testing, and deployment of Bicep templates. Instead of waiting for a full deployment, you can run pre-deployment checks, validate parameters, and ensure everything is working before pushing changes.
 
-## Key Features of Microsoft Symphony
+## Setting Up Symphony for Bicep Testing
 
-### 1. **Scalable Workflow Orchestration**
+### 1. Install Symphony and Dependencies
 
-Symphony allows users to define complex workflows using a **declarative approach** and efficiently distribute tasks across multiple compute resources.
+To get started, clone the Symphony repository and install the required dependencies.
 
-### 2. **Dynamic Task Scheduling**
-
-Symphony optimizes task execution with a **distributed scheduler** that dynamically adjusts workloads based on available resources.
-
-### 3. **Pluggable Architecture**
-
-With its **extensible design**, Symphony supports **custom plugins and integrations** with Kubernetes, Azure Batch, and other cloud services.
-
-### 4. **Fault-Tolerant Execution**
-
-The framework includes **built-in error handling and retry mechanisms**, ensuring reliable workflow execution.
-
-### 5. **Multi-Tenant Support**
-
-Organizations can run **isolated workloads across multiple teams** within the same deployment, improving resource efficiency.
-
-## Why Use Microsoft Symphony?
-
-If you're dealing with **large-scale cloud automation, batch processing, AI workloads, or DevOps pipelines**, Symphony can help by providing:
-
-* **Better resource utilization** through optimized scheduling.
-* **Reduced operational complexity** by abstracting infrastructure concerns.
-* **Improved scalability** for growing workloads.
-
-> "Microsoft Symphony is a game-changer for distributed workload orchestration, offering a highly scalable and fault-tolerant approach to managing complex workflows." – *Cloud Engineering Team*
-
-## Getting Started with Symphony
-
-### **1. Installation**
-
-To install Symphony, you can clone the repository and follow the setup instructions:
 `sh
 git clone https://github.com/microsoft/symphony.git
 cd symphony
 pip install -r requirements.txt
 `
 
-### **2. Define a Workflow**
+You'll also need the Azure CLI and Bicep CLI installed on your machine:
 
-Create a sample workflow using YAML:
-\`yaml
-workflows:
-example-workflow:
-tasks:
-
-* name: "Process Data"
-  command: "python process.py"
-* name: "Train Model"
-  command: "python train.py"
-  depends\_on: \["Process Data"]
-  \`
-
-### **3. Run the Workflow**
-
-Execute your workflow with the Symphony CLI:
 `sh
-symphony run example-workflow.yaml
+az bicep install
 `
 
-## Final Thoughts
+### 2. Define a Test Workflow
 
-Microsoft Symphony is a powerful solution for **orchestrating large-scale workflows** in cloud environments. Whether you're running **AI training jobs, data pipelines, or cloud automation tasks**, Symphony provides the scalability and flexibility needed to streamline operations.
+Create a Symphony workflow that validates a Bicep template before deployment.
 
-To learn more, check out the [official GitHub repository](https://github.com/microsoft/symphony) and start experimenting with Symphony today!
+`yaml
+workflows:
+  test-bicep:
+    tasks:
+      - name: "Validate Bicep"
+        command: "az bicep build --file main.bicep"
+      - name: "Preview Deployment"
+        command: "az deployment sub what-if --template-file main.bicep"
+`
 
-***
+### 3. Run the Workflow
 
-## 📩 Stay Updated!
+Use Symphony to execute the workflow and verify the Bicep template.
 
+`sh
+symphony run test-bicep.yaml
+`
+
+This will check for syntax errors and simulate a deployment to ensure the template works as expected.
+
+## Automating with CI/CD
+
+To integrate this into a CI/CD pipeline, add Symphony to your pipeline configuration. Here’s an example using GitHub Actions:
+
+`yaml
+name: Bicep Validation
+on: [push, pull_request]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Azure CLI
+        run: az bicep install
+      - name: Run Symphony Workflow
+        run: symphony run test-bicep.yaml
+`
+
+## Conclusion
+
+Testing Bicep with Microsoft Symphony ensures that issues are caught early in the development cycle. By automating validation and previewing deployments, teams can avoid unnecessary rollbacks and speed up their infrastructure deployment process.
+
+To learn more, check out the [official Microsoft Symphony repository](https://github.com/microsoft/symphony) and start automating your IAC testing today.
+
+---
+
+## 📩 Stay Updated!  
 Sign up for our newsletter to receive more insights on cloud automation and DevOps best practices.
 
 `yaml
