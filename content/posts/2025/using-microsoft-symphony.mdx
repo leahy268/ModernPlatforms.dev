@@ -1,10 +1,13 @@
 ---
-title: "Testing IAC (Bicep) with Microsoft Symphony"
-category: "Cloud Automation"
-heroImg: "/images/microsoft-symphony-hero.jpg"
-date: "2025-02-19T10:00:00"
-excerpt: |
-  Testing IAC is always a problem. Waiting for a full deployment to occur before discovering bugs is a time-consuming process. Using Microsoft Symphony, we can validate Bicep code early and avoid unnecessary delays.
+title: Testing IAC (Bicep) with Microsoft Symphony
+category: Cloud Automation
+heroImg: /uploads/images/microsoft-symphony-hero.jpg
+excerpt: >
+  Testing IAC is always a problem. Waiting for a full deployment to occur before
+  discovering bugs is a time-consuming process. Using Microsoft Symphony, we can
+  validate Bicep code early and avoid unnecessary delays.
+author: content/authors/warwick.md
+date: 2025-02-19T10:00:00.000Z
 ---
 
 ## Why Test Bicep with Microsoft Symphony?
@@ -35,15 +38,16 @@ az bicep install
 
 Create a Symphony workflow that validates a Bicep template before deployment.
 
-`yaml
+\`yaml
 workflows:
-  test-bicep:
-    tasks:
-      - name: "Validate Bicep"
-        command: "az bicep build --file main.bicep"
-      - name: "Preview Deployment"
-        command: "az deployment sub what-if --template-file main.bicep"
-`
+test-bicep:
+tasks:
+
+* name: "Validate Bicep"
+  command: "az bicep build --file main.bicep"
+* name: "Preview Deployment"
+  command: "az deployment sub what-if --template-file main.bicep"
+  \`
 
 ### 3. Run the Workflow
 
@@ -59,19 +63,20 @@ This will check for syntax errors and simulate a deployment to ensure the templa
 
 To integrate this into a CI/CD pipeline, add Symphony to your pipeline configuration. Here’s an example using GitHub Actions:
 
-`yaml
+\`yaml
 name: Bicep Validation
-on: [push, pull_request]
+on: \[push, pull\_request]
 jobs:
-  validate:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install Azure CLI
-        run: az bicep install
-      - name: Run Symphony Workflow
-        run: symphony run test-bicep.yaml
-`
+validate:
+runs-on: ubuntu-latest
+steps:
+
+* uses: actions/checkout\@v3
+* name: Install Azure CLI
+  run: az bicep install
+* name: Run Symphony Workflow
+  run: symphony run test-bicep.yaml
+  \`
 
 ## Conclusion
 
@@ -79,9 +84,10 @@ Testing Bicep with Microsoft Symphony ensures that issues are caught early in th
 
 To learn more, check out the [official Microsoft Symphony repository](https://github.com/microsoft/symphony) and start automating your IAC testing today.
 
----
+***
 
-## 📩 Stay Updated!  
+## 📩 Stay Updated!
+
 Sign up for our newsletter to receive more insights on cloud automation and DevOps best practices.
 
 `yaml
