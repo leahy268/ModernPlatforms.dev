@@ -20,7 +20,9 @@ Symphony allows you to orchestrate and execute workflows that automate validatio
 
 ### 1. Install Symphony and Dependencies
 
-To get started, clone the Symphony repository and install the required dependencies.
+To get started, clone the Symphony repository and install the required dependencies.  
+
+You can find the full list of instructions here: [https://github.com/microsoft/symphony/blob/main/docs/GETTING\_STARTED.md](https://github.com/microsoft/symphony/blob/main/docs/GETTING_STARTED.md)
 
 On windows this is easiest to setup using WSL.
 
@@ -44,7 +46,7 @@ symphony provision
 symphony pipeline config <azdo|github> <terraform|bicep>
 ```
 
-This asks a number of questions such as: 
+This asks a number of questions such as:
 
 * GitHub Org Name?
 * New repo name?
@@ -55,59 +57,17 @@ This asks a number of questions such as:
 * GitHub PAT to configure the Github secrets
 * Do you want to install sample workflows?
 
- I recommend installing the private runners as I had a little bit of difficulty getting it to work out of the box on a GitHub runner.  It's also probably a good idea as at least it's a private space if you have mistakenly released any secrets.
+I recommend installing the private runners as I had a little bit of difficulty getting it to work out of the box on a GitHub runner.  It's also probably a good idea as at least it's a private space if you have mistakenly released any secrets.
 
-You can find further instructions here: [https://github.com/microsoft/symphony/blob/main/docs/GETTING\_STARTED.md](https://github.com/microsoft/symphony/blob/main/docs/GETTING_STARTED.md)
+### 2. Try out the sample workflows
 
-### 2. Define a Test Workflow
+The repo that is created contains a number of sample workflows already.
 
-The repo that is created contains a number of workflows already.  
-\`
-
-### 3. Run the Workflow
-
-Use Symphony to execute the workflow and verify the Bicep template.
-
-`sh
-symphony run test-bicep.yaml
-`
-
-This will check for syntax errors and simulate a deployment to ensure the template works as expected.
-
-## Automating with CI/CD
-
-To integrate this into a CI/CD pipeline, add Symphony to your pipeline configuration. Here’s an example using GitHub Actions:
-
-\`yaml
-name: Bicep Validation
-on: \[push, pull\_request]
-jobs:
-validate:
-runs-on: ubuntu-latest
-steps:
-
-* uses: actions/checkout\@v3
-* name: Install Azure CLI
-  run: az bicep install
-* name: Run Symphony Workflow
-  run: symphony run test-bicep.yaml
-  \`
+These provide a good starting point to create your own.
 
 ## Conclusion
 
 Testing Bicep with Microsoft Symphony ensures that issues are caught early in the development cycle. By automating validation and previewing deployments, teams can avoid unnecessary rollbacks and speed up their infrastructure deployment process.
 
-To learn more, check out the [official Microsoft Symphony repository](https://github.com/microsoft/symphony) and start automating your IAC testing today.
-
-***
-
-## 📩 Stay Updated!
-
-Sign up for our newsletter to receive more insights on cloud automation and DevOps best practices.
-
-`yaml
-newsletter_signup:
-  placeholder: "Enter your email"
-  buttonText: "Subscribe Now"
-  disclaimer: "We respect your privacy. No spam, unsubscribe anytime."
+To learn more, check out the [official Microsoft Symphony repository](https://github.com/microsoft/symphony) and start automating your IAC testing today.`
 `
