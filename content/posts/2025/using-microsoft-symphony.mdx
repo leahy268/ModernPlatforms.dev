@@ -22,29 +22,47 @@ Symphony allows you to orchestrate and execute workflows that automate validatio
 
 To get started, clone the Symphony repository and install the required dependencies.
 
-`
-`
+On windows this is easiest to setup using WSL.
 
-You'll also need the Azure CLI and Bicep CLI installed on your machine:
+```azcli
+# Clone this repo.
+$> git clone https://github.com/microsoft/symphony.git && cd symphony
 
-`sh
-az bicep install
-`
+# Login to AZ CLi
+az login
+
+# Ensure the target subscription is set
+az account set --subscription <TargetSubscriptionId>
+
+# Configure the symphony cli
+source setup.sh
+
+# Deploy dependent resources.
+symphony provision
+
+# Deploy and Configure an orchestrator.
+symphony pipeline config <azdo|github> <terraform|bicep>
+```
+
+This asks a number of questions such as: 
+
+* GitHub Org Name?
+* New repo name?
+* Is the repo private?
+* Create private runners (yes/no)
+* Existing Resource group to deploy the runners to
+* Resource Id for an existing subnet
+* GitHub PAT to configure the Github secrets
+* Do you want to install sample workflows?
+
+ I recommend installing the private runners as I had a little bit of difficulty getting it to work out of the box on a GitHub runner.  It's also probably a good idea as at least it's a private space if you have mistakenly released any secrets.
+
+You can find further instructions here: [https://github.com/microsoft/symphony/blob/main/docs/GETTING\_STARTED.md](https://github.com/microsoft/symphony/blob/main/docs/GETTING_STARTED.md)
 
 ### 2. Define a Test Workflow
 
-Create a Symphony workflow that validates a Bicep template before deployment.
-
-\`yaml
-workflows:
-test-bicep:
-tasks:
-
-* name: "Validate Bicep"
-  command: "az bicep build --file main.bicep"
-* name: "Preview Deployment"
-  command: "az deployment sub what-if --template-file main.bicep"
-  \`
+The repo that is created contains a number of workflows already.  
+\`
 
 ### 3. Run the Workflow
 
