@@ -3,71 +3,190 @@ title: Testing IAC (Bicep) with Microsoft Symphony
 category: Cloud Automation
 heroImg: /uploads/TestingBicep2.png
 excerpt: >
-  Testing IAC is always a problem. Waiting for a full deployment to occur before
-  discovering bugs is a time-consuming process. Using Microsoft Symphony, we can
-  validate Bicep code early and avoid unnecessary delays.
+  Testing IaC shouldn’t mean waiting for full deployments. Microsoft Symphony
+  validates Bicep templates early, helping teams catch issues fast and deploy
+  with confidence.
 author: content/authors/warwick.md
-date: 2025-02-19T10:00:00.000Z
+date: 2025-05-14T10:00:00.000Z
 ---
 
-## Why Test Bicep with Microsoft Symphony?
+## 🧪 Why Test Bicep with Microsoft Symphony?
 
-Infrastructure as Code (IAC) brings automation and consistency to cloud deployments, but testing can be a challenge. Bicep, Microsoft's DSL for Azure Resource Manager, helps simplify infrastructure definitions. However, without proper validation, teams often run into deployment issues that could have been caught earlier. This is where Microsoft Symphony can help.
+Infrastructure as Code (IaC) brings automation and consistency to cloud deployments, but testing can be a challenge. Bicep — Microsoft’s domain-specific language for Azure Resource Manager — simplifies infrastructure definitions. However, without proper validation, teams often encounter deployment issues that could have been caught earlier.
 
-Symphony allows you to orchestrate and execute workflows that automate validation, testing, and deployment of Bicep templates. Instead of waiting for a full deployment, you can run pre-deployment checks, validate parameters, and ensure everything is working before pushing changes.
+Note: Microsoft Symphony supports both Bicep and Terraform workflows. This post focuses on Bicep usage.
 
-## Setting Up Symphony for Bicep Testing
+**This is where Microsoft Symphony shines.**\
+Symphony orchestrates and executes workflows that automate validation, testing, and deployment of Bicep templates. Instead of waiting for a full deployment, you can run pre-deployment checks, validate parameters, and ensure everything is working before merging changes.
+
+## ⚙️ Setting Up Symphony for Bicep Testing
 
 ### 1. Install Symphony and Dependencies
 
-To get started, clone the Symphony repository and install the required dependencies.  
+To get started, clone the Symphony repository and follow the setup instructions:
 
-You can find the full list of instructions here: [https://github.com/microsoft/symphony/blob/main/docs/GETTING\_STARTED.md](https://github.com/microsoft/symphony/blob/main/docs/GETTING_STARTED.md)
+**Getting Started Guide**: [https://github.com/microsoft/symphony/blob/main/docs/GETTING\_STARTED.md](https://github.com/microsoft/symphony/blob/main/docs/GETTING_STARTED.md)
 
-On windows this is easiest to setup using WSL.
+> 💡 On Windows, using **WSL** is recommended for ease of setup.
 
-```azcli
-# Clone this repo.
-$> git clone https://github.com/microsoft/symphony.git && cd symphony
+```bash
+# Clone the Symphony repo
+git clone https://github.com/microsoft/symphony.git && cd symphony
 
-# Login to AZ CLi
+# Login to Azure
 az login
 
-# Ensure the target subscription is set
+# Set the target subscription
 az account set --subscription <TargetSubscriptionId>
 
-# Configure the symphony cli
+# Source the CLI setup
 source setup.sh
 
-# Deploy dependent resources.
+# Deploy Symphony dependencies
 symphony provision
 
-# Deploy and Configure an orchestrator.
+# Configure the orchestrator (GitHub or Azure DevOps, with Bicep or Terraform)
 symphony pipeline config <azdo|github> <terraform|bicep>
 ```
 
-This asks a number of questions such as:
+During setup, you’ll be prompted for:
 
-* GitHub Org Name?
-* New repo name?
-* Is the repo private?
-* Create private runners (yes/no)
-* Existing Resource group to deploy the runners to
-* Resource Id for an existing subnet
-* GitHub PAT to configure the Github secrets
-* Do you want to install sample workflows?
+* GitHub org and repo name
+* Whether the repo should be private
+* Whether to deploy private runners (**recommended**)
+* Resource group and subnet ID for runners
+* GitHub PAT for configuring secrets
+* Whether to install sample workflows (**yes!**)
 
-I recommend installing the private runners as I had a little bit of difficulty getting it to work out of the box on a GitHub runner.  It's also probably a good idea as at least it's a private space if you have mistakenly released any secrets.
+> 🛡️ **Tip:** Installing private runners provides a safer space to test, especially if any secrets are accidentally exposed. GitHub-hosted runners had minor compatibility issues for me during setup.
 
-### 2. Try out the sample workflows
+## 🧪 PR Workflow: `workflow.pr.bicep.yaml`
 
-The repo that is created contains a number of sample workflows already.
+This workflow is triggered when a **pull request to `main`** is opened, updated, or reopened. It automatically spins up a **temporary environment** to test infrastructure changes in isolation.
 
-These provide a good starting point to create your own.
+### 🛠️ What It Does
 
-## Conclusion
+* Generates a unique environment name from a hash
+* Validates the Bicep templates
+* Stores environment metadata (commit SHA, name, etc.)
+* Deploys the base branch to simulate the current state
+* Overlays the PR branch to preview changes (`what-if`)
+* Runs integration or functional tests (if configured)
+* Automatically destroys the environment unless labeled to preserve it
 
-Testing Bicep with Microsoft Symphony ensures that issues are caught early in the development cycle. By automating validation and previewing deployments, teams can avoid unnecessary rollbacks and speed up their infrastructure deployment process.
+### ✅ Why It Matters
 
-To learn more, check out the [official Microsoft Symphony repository](https://github.com/microsoft/symphony) and start automating your IAC testing today.`
-`
+This approach ensures changes are previewed and tested **before** merging into `main`. You get fast feedback, catch issues early, and avoid last-minute surprises in production.
+
+## 🔄 Continuous Integration Workflow: `workflow.ci.bicep.yml`
+
+This workflow supports **manual CI execution** using the `workflow_dispatch` trigger. It’s ideal for deploying to environments like **dev**, **test**, or **qa**.
+
+### 🔧 Trigger
+
+From the GitHub Actions UI, specify:
+
+* `environmentName` (e.g., `dev`)
+* `locationName` (e.g., `australiaeast`)
+
+### 📋 What It Does
+
+* Validates the Bicep templates
+* Runs a `what-if` to preview upcoming changes
+* Deploys the changes if validation passes
+* Executes tests in the deployed environment
+
+This gives you full control to test and deploy infrastructure changes as part of a structured CI process.
+
+## 🧪 What Symphony Does Under the Hood
+
+Each stage of a Symphony workflow is powered by familiar, open tools — which means you can extend, debug, or replace them easily. Here's a look at what happens during each major step:
+
+### 🔍 Validate
+
+Symphony's validation step includes two critical checks:
+
+* **[GitLeaks](https://github.com/gitleaks/gitleaks)**\
+  Scans the repository for accidental secrets and sensitive data (like passwords, connection strings, tokens, etc.). This helps catch security issues before anything is deployed.
+* **Bicep Lint**\
+  Runs `az bicep build` and syntax checks to ensure your templates are valid and follow best practices. This includes checking for missing parameters, unsupported properties, and invalid scopes.
+
+### 🔄 Preview and Deploy
+
+This step runs in two parts:
+
+* **Bicep What-If Deployment**\
+  Symphony uses `az deployment what-if` to show exactly what changes would be applied without actually deploying. This helps you catch unintended infrastructure modifications before they go live.
+* **Actual Deployment**\
+  After the preview, if everything is valid, the infrastructure is deployed using `az deployment create`. This uses your `.bicep` and `.bicepparam` files along with dynamic environment variables.
+
+### ✅ Test
+
+Symphony uses **[Pester](https://pester.dev/)** (a PowerShell test framework) to validate the deployed resources.
+
+Here’s an example of what a typical test file looks like:
+
+```powershell
+BeforeAll {
+  Import-Module BenchPress.Azure
+
+  $storageAccountResourceGroupName = $env:storageAccountResourceGroupName
+  $storageAccountName = $env:storageAccountName
+  $appConfigResourceGroupName = $env:appConfigResourceGroupName
+  $appConfigAccountName = $env:appConfigAccountName
+  $appConfigItemsLength = $env:appConfigItemsLength
+}
+
+Describe "End to End Tests" {
+  Context "Test end to end" {
+    It "should check the parameters and environment variables configured correctly" {
+      $storageAccountResourceGroupName | Should -Not -Be $Null
+      $storageAccountName | Should -Not -Be $Null
+      $appConfigResourceGroupName | Should -Not -Be $Null
+      $appConfigAccountName | Should -Not -Be $Null
+      $appConfigItemsLength | Should -BeGreaterThan 0
+    }
+
+    It "should check the storage account is ready" {
+      $storageAccountResource = Confirm-AzBPStorageAccount -ResourceGroupName $storageAccountResourceGroupName -Name $storageAccountName
+      $storageAccountResource | Should -Be -Not $null
+    }
+
+    It "should check the storage account is configured correctly" {
+      $storageAccountResource = Confirm-AzBPStorageAccount -ResourceGroupName $storageAccountResourceGroupName -Name $storageAccountName
+
+      $storageAccountResource.ResourceDetails.ProvisioningState | Should -Be "Succeeded"
+      $storageAccountResource.ResourceDetails.Kind | Should -Be "StorageV2"
+      $storageAccountResource.ResourceDetails.Sku.Name | Should -Be "Standard_LRS"
+      $storageAccountResource.ResourceDetails.EnableHttpsTrafficOnly | Should -Be $true
+    }
+
+    It "should check the app config is ready" {
+      $appConfigResource = Get-AzBPResource -ResourceName $appConfigAccountName -ResourceGroupName $appConfigResourceGroupName
+      $appConfigResource | Should -Be -Not $null
+    }
+  }
+}
+```
+
+### 💡 Want to Do More? Check for a Private Endpoint
+
+To extend these tests, you can verify that the storage account has a **private endpoint** attached. Here's an additional test you could add:
+
+```powershell
+It "should have a private endpoint configured for the storage account" {
+  $peResources = Get-AzBPPrivateEndpoints -ResourceGroupName $storageAccountResourceGroupName -TargetResourceName $storageAccountName
+  $peResources.Count | Should -BeGreaterThan 0
+}
+```
+
+This confirms that your storage account is securely accessible only from within your virtual network — a common security best practice in enterprise environments.
+
+## ✅ Conclusion
+
+Testing Bicep with Microsoft Symphony ensures issues are caught **early** in the development cycle. By automating validation, previewing changes, and testing before merging, Symphony empowers teams to ship infrastructure faster and safer — with fewer rollbacks and more confidence.
+
+**Explore the Microsoft Symphony Repository:**\
+[https://github.com/microsoft/symphony](https://github.com/microsoft/symphony)
+
+Start automating your IaC testing today.
