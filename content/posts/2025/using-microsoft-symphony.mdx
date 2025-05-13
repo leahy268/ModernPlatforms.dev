@@ -7,17 +7,15 @@ excerpt: >
   discovering bugs is a time-consuming process. Using Microsoft Symphony, we can
   validate Bicep code early and avoid unnecessary delays.
 author: content/authors/warwick.md
-date: 2025-02-19T10:00:00.000Z
+date: 2025-05-14T10:00:00.000Z
 ---
 
 ## 🧪 Why Test Bicep with Microsoft Symphony?
 
 Infrastructure as Code (IaC) brings automation and consistency to cloud deployments, but testing can be a challenge. Bicep — Microsoft’s domain-specific language for Azure Resource Manager — simplifies infrastructure definitions. However, without proper validation, teams often encounter deployment issues that could have been caught earlier.
 
-**This is where Microsoft Symphony shines.**  
+**This is where Microsoft Symphony shines.**\
 Symphony orchestrates and executes workflows that automate validation, testing, and deployment of Bicep templates. Instead of waiting for a full deployment, you can run pre-deployment checks, validate parameters, and ensure everything is working before merging changes.
-
----
 
 ## ⚙️ Setting Up Symphony for Bicep Testing
 
@@ -25,7 +23,7 @@ Symphony orchestrates and executes workflows that automate validation, testing, 
 
 To get started, clone the Symphony repository and follow the setup instructions:
 
-**Getting Started Guide**: https://github.com/microsoft/symphony/blob/main/docs/GETTING_STARTED.md
+**Getting Started Guide**: [https://github.com/microsoft/symphony/blob/main/docs/GETTING\_STARTED.md](https://github.com/microsoft/symphony/blob/main/docs/GETTING_STARTED.md)
 
 > 💡 On Windows, using **WSL** is recommended for ease of setup.
 
@@ -50,16 +48,15 @@ symphony pipeline config <azdo|github> <terraform|bicep>
 ```
 
 During setup, you’ll be prompted for:
-- GitHub org and repo name  
-- Whether the repo should be private  
-- Whether to deploy private runners (**recommended**)  
-- Resource group and subnet ID for runners  
-- GitHub PAT for configuring secrets  
-- Whether to install sample workflows (**yes!**)
+
+* GitHub org and repo name
+* Whether the repo should be private
+* Whether to deploy private runners (**recommended**)
+* Resource group and subnet ID for runners
+* GitHub PAT for configuring secrets
+* Whether to install sample workflows (**yes!**)
 
 > 🛡️ **Tip:** Installing private runners provides a safer space to test, especially if any secrets are accidentally exposed. GitHub-hosted runners had minor compatibility issues for me during setup.
-
----
 
 ## 🧪 PR Workflow: `workflow.pr.bicep.yaml`
 
@@ -67,19 +64,17 @@ This workflow is triggered when a **pull request to `main`** is opened, updated,
 
 ### 🛠️ What It Does
 
-- Generates a unique environment name from a hash  
-- Validates the Bicep templates  
-- Stores environment metadata (commit SHA, name, etc.)  
-- Deploys the base branch to simulate the current state  
-- Overlays the PR branch to preview changes (`what-if`)  
-- Runs integration or functional tests (if configured)  
-- Automatically destroys the environment unless labeled to preserve it
+* Generates a unique environment name from a hash
+* Validates the Bicep templates
+* Stores environment metadata (commit SHA, name, etc.)
+* Deploys the base branch to simulate the current state
+* Overlays the PR branch to preview changes (`what-if`)
+* Runs integration or functional tests (if configured)
+* Automatically destroys the environment unless labeled to preserve it
 
 ### ✅ Why It Matters
 
 This approach ensures changes are previewed and tested **before** merging into `main`. You get fast feedback, catch issues early, and avoid last-minute surprises in production.
-
----
 
 ## 🔄 Continuous Integration Workflow: `workflow.ci.bicep.yml`
 
@@ -88,21 +83,18 @@ This workflow supports **manual CI execution** using the `workflow_dispatch` tri
 ### 🔧 Trigger
 
 From the GitHub Actions UI, specify:
-- `environmentName` (e.g., `dev`)  
-- `locationName` (e.g., `australiaeast`)  
+
+* `environmentName` (e.g., `dev`)
+* `locationName` (e.g., `australiaeast`)
 
 ### 📋 What It Does
 
-- Validates the Bicep templates  
-- Runs a `what-if` to preview upcoming changes  
-- Deploys the changes if validation passes  
-- Executes tests in the deployed environment  
+* Validates the Bicep templates
+* Runs a `what-if` to preview upcoming changes
+* Deploys the changes if validation passes
+* Executes tests in the deployed environment
 
 This gives you full control to test and deploy infrastructure changes as part of a structured CI process.
-
----
-
----
 
 ## 🧪 What Symphony Does Under the Hood
 
@@ -112,25 +104,19 @@ Each stage of a Symphony workflow is powered by familiar, open tools — which m
 
 Symphony's validation step includes two critical checks:
 
-- **[GitLeaks](https://github.com/gitleaks/gitleaks)**  
+* **[GitLeaks](https://github.com/gitleaks/gitleaks)**\
   Scans the repository for accidental secrets and sensitive data (like passwords, connection strings, tokens, etc.). This helps catch security issues before anything is deployed.
-
-- **Bicep Lint**  
+* **Bicep Lint**\
   Runs `az bicep build` and syntax checks to ensure your templates are valid and follow best practices. This includes checking for missing parameters, unsupported properties, and invalid scopes.
-
----
 
 ### 🔄 Preview and Deploy
 
 This step runs in two parts:
 
-- **Bicep What-If Deployment**  
+* **Bicep What-If Deployment**\
   Symphony uses `az deployment what-if` to show exactly what changes would be applied without actually deploying. This helps you catch unintended infrastructure modifications before they go live.
-
-- **Actual Deployment**  
+* **Actual Deployment**\
   After the preview, if everything is valid, the infrastructure is deployed using `az deployment create`. This uses your `.bicep` and `.bicepparam` files along with dynamic environment variables.
-
----
 
 ### ✅ Test
 
@@ -181,8 +167,6 @@ Describe "End to End Tests" {
 }
 ```
 
----
-
 ### 💡 Want to Do More? Check for a Private Endpoint
 
 To extend these tests, you can verify that the storage account has a **private endpoint** attached. Here's an additional test you could add:
@@ -196,13 +180,11 @@ It "should have a private endpoint configured for the storage account" {
 
 This confirms that your storage account is securely accessible only from within your virtual network — a common security best practice in enterprise environments.
 
----
-
 ## ✅ Conclusion
 
 Testing Bicep with Microsoft Symphony ensures issues are caught **early** in the development cycle. By automating validation, previewing changes, and testing before merging, Symphony empowers teams to ship infrastructure faster and safer — with fewer rollbacks and more confidence.
 
-**Explore the Microsoft Symphony Repository:**  
-https://github.com/microsoft/symphony
+**Explore the Microsoft Symphony Repository:**\
+[https://github.com/microsoft/symphony](https://github.com/microsoft/symphony)
 
 Start automating your IaC testing today.
