@@ -142,16 +142,6 @@ export default function PostClientPage(props: ClientPostProps) {
           />
         </div>
       </Container>
-      <Container width="small" className={`flex-1 pt-4`} size="large">
-        <div className="flex items-center justify-center mb-16">
-          <p
-            data-tina-field={tinaField(post, "category")}
-            className="text-base font-medium text-gray-600 group-hover:text-gray-800 dark:text-gray-200 dark:group-hover:text-white"
-          >
-            {category}
-          </p>
-        </div>
-      </Container>
       {/* ✅ Comments Section (Added Here) */}
       <Container width="small" className="flex-1 pt-6" size="large">
         <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300">💬 Join the Discussion</h3>
