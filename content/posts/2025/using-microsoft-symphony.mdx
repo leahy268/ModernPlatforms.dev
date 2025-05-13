@@ -10,64 +10,57 @@ author: content/authors/warwick.md
 date: 2025-05-15T10:00:00.000Z
 ---
 
-## Why Test Bicep with Microsoft Symphony?
+## 🧪 Why Test Bicep with Microsoft Symphony?
 
-Infrastructure as Code (IAC) brings automation and consistency to cloud deployments, but testing can be a challenge. Bicep, Microsoft's DSL for Azure Resource Manager, helps simplify infrastructure definitions. However, without proper validation, teams often run into deployment issues that could have been caught earlier. This is where Microsoft Symphony can help.
+Infrastructure as Code (IaC) brings automation and consistency to cloud deployments, but testing can be a challenge. Bicep — Microsoft’s domain-specific language for Azure Resource Manager — simplifies infrastructure definitions. However, without proper validation, teams often encounter deployment issues that could have been caught earlier.
 
-Symphony allows you to orchestrate and execute workflows that automate validation, testing, and deployment of Bicep templates. Instead of waiting for a full deployment, you can run pre-deployment checks, validate parameters, and ensure everything is working before pushing changes.
+**This is where Microsoft Symphony shines.**  
+Symphony orchestrates and executes workflows that automate validation, testing, and deployment of Bicep templates. Instead of waiting for a full deployment, you can run pre-deployment checks, validate parameters, and ensure everything is working before merging changes.
 
-## Setting Up Symphony for Bicep Testing
+---
+
+## ⚙️ Setting Up Symphony for Bicep Testing
 
 ### 1. Install Symphony and Dependencies
 
-To get started, clone the Symphony repository and install the required dependencies.
+To get started, clone the Symphony repository and follow the setup instructions:
 
-You can find the full list of instructions here: [https://github.com/microsoft/symphony/blob/main/docs/GETTING\_STARTED.md](https://github.com/microsoft/symphony/blob/main/docs/GETTING_STARTED.md)
+**Getting Started Guide**: https://github.com/microsoft/symphony/blob/main/docs/GETTING_STARTED.md
 
-On windows this is easiest to setup using WSL.
+> 💡 On Windows, using **WSL** is recommended for ease of setup.
 
-```azcli
-# Clone this repo.
-$> git clone https://github.com/microsoft/symphony.git && cd symphony
+```bash
+# Clone the Symphony repo
+git clone https://github.com/microsoft/symphony.git && cd symphony
 
-# Login to AZ CLi
+# Login to Azure
 az login
 
-# Ensure the target subscription is set
+# Set the target subscription
 az account set --subscription <TargetSubscriptionId>
 
-# Configure the symphony cli
+# Source the CLI setup
 source setup.sh
 
-# Deploy dependent resources.
+# Deploy Symphony dependencies
 symphony provision
 
-# Deploy and Configure an orchestrator.
+# Configure the orchestrator (GitHub or Azure DevOps, with Bicep or Terraform)
 symphony pipeline config <azdo|github> <terraform|bicep>
 ```
 
-This asks a number of questions such as:
+During setup, you’ll be prompted for:
+- GitHub org and repo name  
+- Whether the repo should be private  
+- Whether to deploy private runners (**recommended**)  
+- Resource group and subnet ID for runners  
+- GitHub PAT for configuring secrets  
+- Whether to install sample workflows (**yes!**)
 
-* GitHub Org Name?
-* New repo name?
-* Is the repo private?
-* Create private runners (yes/no)
-* Existing Resource group to deploy the runners to
-* Resource Id for an existing subnet
-* GitHub PAT to configure the Github secrets
-* Do you want to install sample workflows?
+> 🛡️ **Tip:** Installing private runners provides a safer space to test, especially if any secrets are accidentally exposed. GitHub-hosted runners had minor compatibility issues for me during setup.
 
-I recommend installing the private runners as I had a little bit of difficulty getting it to work out of the box on a GitHub runner.  It's also probably a good idea as at least it's a private space if you have mistakenly released any secrets.
+---
 
-### 2. Try out the sample workflows
+## 🧪 PR Workflow: `workflow.pr.bicep.yaml`
 
-The repo that is created contains a number of sample workflows already.
-
-These provide a good starting point to create your own.
-
-## Conclusion
-
-Testing Bicep with Microsoft Symphony ensures that issues are caught early in the development cycle. By automating validation and previewing deployments, teams can avoid unnecessary rollbacks and speed up their infrastructure deployment process.
-
-To learn more, check out the [official Microsoft Symphony repository](https://github.com/microsoft/symphony) and start automating your IAC testing today.`
-`
+This workflow is triggered when a **pull request to `main`** is opened, updated, or reopened. It automatically spins up a **temporary environment** to test infrastructure
