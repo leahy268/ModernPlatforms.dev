@@ -47,7 +47,6 @@ export default function PostClientPage(props: ClientPostProps) {
   const post = data.post;
   const giscusConfig = props.giscusConfig; 
   const date = new Date(post.date);
-  const category = post.category;
   let formattedDate = "";
   if (!isNaN(date.getTime())) {
     formattedDate = format(date, "MMM dd, yyyy");
