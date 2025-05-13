@@ -47,7 +47,6 @@ export default function PostClientPage(props: ClientPostProps) {
   const post = data.post;
   const giscusConfig = props.giscusConfig; 
   const date = new Date(post.date);
-  const category = post.category;
   let formattedDate = "";
   if (!isNaN(date.getTime())) {
     formattedDate = format(date, "MMM dd, yyyy");
@@ -140,16 +139,6 @@ export default function PostClientPage(props: ClientPostProps) {
               ...components,
             }}
           />
-        </div>
-      </Container>
-      <Container width="small" className={`flex-1 pt-4`} size="large">
-        <div className="flex items-center justify-center mb-16">
-          <p
-            data-tina-field={tinaField(post, "category")}
-            className="text-base font-medium text-gray-600 group-hover:text-gray-800 dark:text-gray-200 dark:group-hover:text-white"
-          >
-            {category}
-          </p>
         </div>
       </Container>
       {/* ✅ Comments Section (Added Here) */}
