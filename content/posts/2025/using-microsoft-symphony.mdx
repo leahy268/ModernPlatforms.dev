@@ -90,6 +90,102 @@ This gives you full control to test and deploy infrastructure changes as part of
 
 ---
 
+---
+
+## 🧪 What Symphony Does Under the Hood
+
+Each stage of a Symphony workflow is powered by familiar, open tools — which means you can extend, debug, or replace them easily. Here's a look at what happens during each major step:
+
+### 🔍 Validate
+
+Symphony's validation step includes two critical checks:
+
+- **[GitLeaks](https://github.com/gitleaks/gitleaks)**  
+  Scans the repository for accidental secrets and sensitive data (like passwords, connection strings, tokens, etc.). This helps catch security issues before anything is deployed.
+
+- **Bicep Lint**  
+  Runs `az bicep build` and syntax checks to ensure your templates are valid and follow best practices. This includes checking for missing parameters, unsupported properties, and invalid scopes.
+
+---
+
+### 🔄 Preview and Deploy
+
+This step runs in two parts:
+
+- **Bicep What-If Deployment**  
+  Symphony uses `az deployment what-if` to show exactly what changes would be applied without actually deploying. This helps you catch unintended infrastructure modifications before they go live.
+
+- **Actual Deployment**  
+  After the preview, if everything is valid, the infrastructure is deployed using `az deployment create`. This uses your `.bicep` and `.bicepparam` files along with dynamic environment variables.
+
+---
+
+### ✅ Test
+
+Symphony uses **[Pester](https://pester.dev/)** (a PowerShell test framework) to validate the deployed resources.
+
+Here’s an example of what a typical test file looks like:
+
+```powershell
+BeforeAll {
+  Import-Module BenchPress.Azure
+
+  $storageAccountResourceGroupName = $env:storageAccountResourceGroupName
+  $storageAccountName = $env:storageAccountName
+  $appConfigResourceGroupName = $env:appConfigResourceGroupName
+  $appConfigAccountName = $env:appConfigAccountName
+  $appConfigItemsLength = $env:appConfigItemsLength
+}
+
+Describe "End to End Tests" {
+  Context "Test end to end" {
+    It "should check the parameters and environment variables configured correctly" {
+      $storageAccountResourceGroupName | Should -Not -Be $Null
+      $storageAccountName | Should -Not -Be $Null
+      $appConfigResourceGroupName | Should -Not -Be $Null
+      $appConfigAccountName | Should -Not -Be $Null
+      $appConfigItemsLength | Should -BeGreaterThan 0
+    }
+
+    It "should check the storage account is ready" {
+      $storageAccountResource = Confirm-AzBPStorageAccount -ResourceGroupName $storageAccountResourceGroupName -Name $storageAccountName
+      $storageAccountResource | Should -Be -Not $null
+    }
+
+    It "should check the storage account is configured correctly" {
+      $storageAccountResource = Confirm-AzBPStorageAccount -ResourceGroupName $storageAccountResourceGroupName -Name $storageAccountName
+
+      $storageAccountResource.ResourceDetails.ProvisioningState | Should -Be "Succeeded"
+      $storageAccountResource.ResourceDetails.Kind | Should -Be "StorageV2"
+      $storageAccountResource.ResourceDetails.Sku.Name | Should -Be "Standard_LRS"
+      $storageAccountResource.ResourceDetails.EnableHttpsTrafficOnly | Should -Be $true
+    }
+
+    It "should check the app config is ready" {
+      $appConfigResource = Get-AzBPResource -ResourceName $appConfigAccountName -ResourceGroupName $appConfigResourceGroupName
+      $appConfigResource | Should -Be -Not $null
+    }
+  }
+}
+```
+
+---
+
+### 💡 Want to Do More? Check for a Private Endpoint
+
+To extend these tests, you can verify that the storage account has a **private endpoint** attached. Here's an additional test you could add:
+
+```powershell
+It "should have a private endpoint configured for the storage account" {
+  $peResources = Get-AzBPPrivateEndpoints -ResourceGroupName $storageAccountResourceGroupName -TargetResourceName $storageAccountName
+  $peResources.Count | Should -BeGreaterThan 0
+}
+```
+
+This confirms that your storage account is securely accessible only from within your virtual network — a common security best practice in enterprise environments.
+
+---
+
 ## ✅ Conclusion
 
 Testing Bicep with Microsoft Symphony ensures issues are caught **early** in the development cycle. By automating validation, previewing changes, and testing before merging, Symphony empowers teams to ship infrastructure faster and safer — with fewer rollbacks and more confidence.
