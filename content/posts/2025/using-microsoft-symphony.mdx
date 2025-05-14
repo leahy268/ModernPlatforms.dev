@@ -1,33 +1,34 @@
 ---
-title: Testing IAC (Bicep) with Microsoft Symphony
+title: Testing IaC (Bicep) with Microsoft Symphony
 category: Cloud Automation
 heroImg: /uploads/TestingBicep2.png
 excerpt: >
-  Testing IaC shouldn’t mean waiting for full deployments. Microsoft Symphony
+  Testing IaC shouldn't mean waiting for full deployments. Microsoft Symphony
   validates Bicep templates early, helping teams catch issues fast and deploy
   with confidence.
 author: content/authors/warwick.md
 date: 2025-05-14T10:00:00.000Z
 ---
 
-## 🧪 Why Test Bicep with Microsoft Symphony?
+## Introduction
 
 Infrastructure as Code (IaC) brings automation and consistency to cloud deployments, but testing can be a challenge. Bicep — Microsoft’s domain-specific language for Azure Resource Manager — simplifies infrastructure definitions. However, without proper validation, teams often encounter deployment issues that could have been caught earlier.
 
-Note: Microsoft Symphony supports both Bicep and Terraform workflows. This post focuses on Bicep usage.
+**This is where Microsoft Symphony shines.** It orchestrates workflows that validate, preview, and test infrastructure templates before deployment. By integrating with either GitHub or Azure DevOps, Symphony connects to your existing infrastructure repository and introduces automated validation pipelines for Bicep or Terraform.
 
-**This is where Microsoft Symphony shines.**\
-Symphony orchestrates and executes workflows that automate validation, testing, and deployment of Bicep templates. Instead of waiting for a full deployment, you can run pre-deployment checks, validate parameters, and ensure everything is working before merging changes.
+> **Note:** Microsoft Symphony supports both Bicep and Terraform workflows. This post focuses on Bicep usage.
 
-## ⚙️ Setting Up Symphony for Bicep Testing
+![Symphony Workflow Overview](/uploads/TestingBicep2.png)
+
+## Setting Up Symphony for Bicep Testing
 
 ### 1. Install Symphony and Dependencies
 
 To get started, clone the Symphony repository and follow the setup instructions:
 
-**Getting Started Guide**: [https://github.com/microsoft/symphony/blob/main/docs/GETTING\_STARTED.md](https://github.com/microsoft/symphony/blob/main/docs/GETTING_STARTED.md)
+**Getting Started Guide**: [https://github.com/microsoft/symphony/blob/main/docs/GETTING_STARTED.md](https://github.com/microsoft/symphony/blob/main/docs/GETTING_STARTED.md)
 
-> 💡 On Windows, using **WSL** is recommended for ease of setup.
+> On Windows, using **WSL** is recommended for ease of setup.
 
 ```bash
 # Clone the Symphony repo
@@ -47,7 +48,6 @@ symphony provision
 
 # Configure the orchestrator (GitHub or Azure DevOps, with Bicep or Terraform)
 symphony pipeline config <azdo|github> <terraform|bicep>
-```
 
 During setup, you’ll be prompted for:
 
@@ -58,13 +58,13 @@ During setup, you’ll be prompted for:
 * GitHub PAT for configuring secrets
 * Whether to install sample workflows (**yes!**)
 
-> 🛡️ **Tip:** Installing private runners provides a safer space to test, especially if any secrets are accidentally exposed. GitHub-hosted runners had minor compatibility issues for me during setup.
+>🛡️ Tip: Installing private runners provides a safer space to test, especially if any secrets are accidentally exposed. GitHub-hosted runners had minor compatibility issues for me during setup.
+> 🗂️ Note: As part of this process, Symphony will create a new GitHub repository. This is where your Bicep code and automated workflow tests will run — separate from your original source repository. You can fork or sync your infrastructure code into this environment to use it for pre-deployment validation.
 
-## 🧪 PR Workflow: `workflow.pr.bicep.yaml`
+#PR Workflow: workflow.pr.bicep.yaml
+Triggered by pull requests to main, this workflow spins up a temporary environment to test infrastructure changes in isolation.
 
-This workflow is triggered when a **pull request to `main`** is opened, updated, or reopened. It automatically spins up a **temporary environment** to test infrastructure changes in isolation.
-
-### 🛠️ What It Does
+### What It Does
 
 * Generates a unique environment name from a hash
 * Validates the Bicep templates
@@ -74,22 +74,22 @@ This workflow is triggered when a **pull request to `main`** is opened, updated,
 * Runs integration or functional tests (if configured)
 * Automatically destroys the environment unless labeled to preserve it
 
-### ✅ Why It Matters
+### Why It Matters
 
 This approach ensures changes are previewed and tested **before** merging into `main`. You get fast feedback, catch issues early, and avoid last-minute surprises in production.
 
-## 🔄 Continuous Integration Workflow: `workflow.ci.bicep.yml`
+## Continuous Integration Workflow: `workflow.ci.bicep.yml`
 
 This workflow supports **manual CI execution** using the `workflow_dispatch` trigger. It’s ideal for deploying to environments like **dev**, **test**, or **qa**.
 
-### 🔧 Trigger
+### Trigger Inputs
 
 From the GitHub Actions UI, specify:
 
 * `environmentName` (e.g., `dev`)
 * `locationName` (e.g., `australiaeast`)
 
-### 📋 What It Does
+### What It Does
 
 * Validates the Bicep templates
 * Runs a `what-if` to preview upcoming changes
@@ -98,29 +98,29 @@ From the GitHub Actions UI, specify:
 
 This gives you full control to test and deploy infrastructure changes as part of a structured CI process.
 
-## 🧪 What Symphony Does Under the Hood
+## What Symphony Does Under the Hood
 
 Each stage of a Symphony workflow is powered by familiar, open tools — which means you can extend, debug, or replace them easily. Here's a look at what happens during each major step:
 
-### 🔍 Validate
+### Validate
 
 Symphony's validation step includes two critical checks:
 
-* **[GitLeaks](https://github.com/gitleaks/gitleaks)**\
+* **[GitLeaks](https://github.com/gitleaks/gitleaks)**
   Scans the repository for accidental secrets and sensitive data (like passwords, connection strings, tokens, etc.). This helps catch security issues before anything is deployed.
 * **Bicep Lint**\
   Runs `az bicep build` and syntax checks to ensure your templates are valid and follow best practices. This includes checking for missing parameters, unsupported properties, and invalid scopes.
 
-### 🔄 Preview and Deploy
+### Preview and Deploy
 
 This step runs in two parts:
 
-* **Bicep What-If Deployment**\
+* **Bicep What-If Deployment**
   Symphony uses `az deployment what-if` to show exactly what changes would be applied without actually deploying. This helps you catch unintended infrastructure modifications before they go live.
-* **Actual Deployment**\
+* **Actual Deployment**
   After the preview, if everything is valid, the infrastructure is deployed using `az deployment create`. This uses your `.bicep` and `.bicepparam` files along with dynamic environment variables.
 
-### ✅ Test
+### Test
 
 Symphony uses **[Pester](https://pester.dev/)** (a PowerShell test framework) to validate the deployed resources.
 
@@ -169,8 +169,6 @@ Describe "End to End Tests" {
 }
 ```
 
-### 💡 Want to Do More? Check for a Private Endpoint
-
 To extend these tests, you can verify that the storage account has a **private endpoint** attached. Here's an additional test you could add:
 
 ```powershell
@@ -182,7 +180,25 @@ It "should have a private endpoint configured for the storage account" {
 
 This confirms that your storage account is securely accessible only from within your virtual network — a common security best practice in enterprise environments.
 
-## ✅ Conclusion
+# What About AVMs?
+
+Validating infrastructure is critical, but using **Azure Verified Modules (AVMs)** adds another layer of assurance. AVMs are pre-built, Microsoft-supported Bicep modules that follow Azure best practices and undergo rigorous testing before publication.
+
+They reduce the burden of writing, testing, and maintaining complex infrastructure definitions from scratch — especially for common Azure resources like storage accounts, networking, compute, and identity.
+
+However, while AVMs provide confidence in the **individual modules**, there’s still value in validating how they work together in **your actual environment** with **your specific parameters**. Real-world configurations often involve environment-specific customizations, naming conventions, or integrations with existing systems. Testing the assembled infrastructure holistically is where Symphony shines.
+
+By combining AVMs with Symphony:
+
+- You get reusable, trusted building blocks from Microsoft
+- You validate the complete deployment as it will behave in your cloud environment
+- You catch environment-specific misconfigurations before they become production issues
+
+In short, AVMs are a solid foundation — Symphony helps prove that the house you’ve built on that foundation won’t fall over when you turn it on.
+
+It’s worth exploring AVMs as part of your strategy — possibly the topic of a follow-up post.
+
+## Conclusion
 
 Testing Bicep with Microsoft Symphony ensures issues are caught **early** in the development cycle. By automating validation, previewing changes, and testing before merging, Symphony empowers teams to ship infrastructure faster and safer — with fewer rollbacks and more confidence.
 
