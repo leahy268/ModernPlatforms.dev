@@ -57,7 +57,7 @@ export default function PostClientPage(props: ClientPostProps) {
       <Container width="small" className={`flex-1 pb-2`} size="large">
         <h2
           data-tina-field={tinaField(post, "title")}
-          className={`w-full relative	mb-8 text-6xl font-extrabold tracking-normal text-center title-font`}
+          className={`w-full relative mb-8 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-normal text-center title-font`}
         >
           <span
             className={`bg-clip-text text-transparent bg-gradient-to-r ${
@@ -143,7 +143,7 @@ export default function PostClientPage(props: ClientPostProps) {
       </Container>
       {/* ✅ Comments Section (Added Here) */}
       <Container width="small" className="flex-1 pt-6" size="large">
-        <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300">💬 Join the Discussion</h3>
+      <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-700 dark:text-gray-300">💬 Join the Discussion</h3>
         <Comments
           repo={giscusConfig.repo}
           repoId={giscusConfig.repoId}
