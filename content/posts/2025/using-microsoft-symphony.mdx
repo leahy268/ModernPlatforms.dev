@@ -64,7 +64,7 @@ During setup, you’ll be prompted for:
 
 # PR Workflow:
 
-** workflow\.pr.bicep.yaml**
+**workflow\.pr.bicep.yaml**
 
 Triggered by pull requests to main, this workflow spins up a temporary environment to test infrastructure changes in isolation.
 
@@ -84,7 +84,7 @@ This approach ensures changes are previewed and tested **before** merging into `
 
 ## Continuous Integration Workflow: `workflow.ci.bicep.yml`
 
-This workflow supports **manual CI execution** using the `workflow_dispatch` trigger. It’s ideal for deploying to environments like **dev**, **test**, or **qa**.
+This workflow supports manual CI execution using the `workflow_dispatch` trigger. It’s ideal for deploying to environments like **dev or** **test.  **It also already contains the on push sections (commented out) ready for your real CI workflows.
 
 ### Trigger Inputs
 
