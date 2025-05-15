@@ -62,7 +62,10 @@ During setup, you’ll be prompted for:
 > 🛡️ Tip: Installing private runners provides a safer space to test, especially if any secrets are accidentally exposed. GitHub-hosted runners had minor compatibility issues for me during setup.
 > 🗂️ Note: As part of this process, Symphony will create a new GitHub repository. This is where your Bicep code and automated workflow tests will run — separate from your original source repository. You can fork or sync your infrastructure code into this environment to use it for pre-deployment validation.
 
-\#PR Workflow: workflow\.pr.bicep.yaml
+# PR Workflow:
+
+** workflow\.pr.bicep.yaml**
+
 Triggered by pull requests to main, this workflow spins up a temporary environment to test infrastructure changes in isolation.
 
 ### What It Does
