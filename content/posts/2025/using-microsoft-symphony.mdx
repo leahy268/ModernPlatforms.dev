@@ -84,7 +84,7 @@ This approach ensures changes are previewed and tested **before** merging into `
 
 ## Continuous Integration Workflow: `workflow.ci.bicep.yml`
 
-This workflow supports manual CI execution using the `workflow_dispatch` trigger. It’s ideal for deploying to environments like **dev or** **test.  **It also already contains the on push sections (commented out) ready for your real CI workflows.
+This workflow supports manual CI execution using the `workflow_dispatch` trigger. It’s ideal for deploying to environments like **dev or** \*\*test.  \*\*It also already contains the on push sections (commented out) ready for your real CI workflows.
 
 ### Trigger Inputs
 
@@ -181,6 +181,10 @@ It "should have a private endpoint configured for the storage account" {
   $peResources.Count | Should -BeGreaterThan 0
 }
 ```
+
+With detailed logging this gives some really nice logs like this\
+\
+
 
 This confirms that your storage account is securely accessible only from within your virtual network — a common security best practice in enterprise environments.
 
