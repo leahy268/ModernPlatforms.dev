@@ -26,7 +26,7 @@ Infrastructure as Code (IaC) brings automation and consistency to cloud deployme
 
 To get started, clone the Symphony repository and follow the setup instructions:
 
-**Getting Started Guide**: [https://github.com/microsoft/symphony/blob/main/docs/GETTING_STARTED.md](https://github.com/microsoft/symphony/blob/main/docs/GETTING_STARTED.md)
+**Getting Started Guide**: [https://github.com/microsoft/symphony/blob/main/docs/GETTING\_STARTED.md](https://github.com/microsoft/symphony/blob/main/docs/GETTING_STARTED.md)
 
 > On Windows, using **WSL** is recommended for ease of setup.
 
@@ -49,6 +49,7 @@ symphony provision
 # Configure the orchestrator (GitHub or Azure DevOps, with Bicep or Terraform)
 symphony pipeline config <azdo|github> <terraform|bicep>
 ```
+
 During setup, you’ll be prompted for:
 
 * GitHub org and repo name
@@ -58,10 +59,10 @@ During setup, you’ll be prompted for:
 * GitHub PAT for configuring secrets
 * Whether to install sample workflows (**yes!**)
 
->🛡️ Tip: Installing private runners provides a safer space to test, especially if any secrets are accidentally exposed. GitHub-hosted runners had minor compatibility issues for me during setup.
+> 🛡️ Tip: Installing private runners provides a safer space to test, especially if any secrets are accidentally exposed. GitHub-hosted runners had minor compatibility issues for me during setup.
 > 🗂️ Note: As part of this process, Symphony will create a new GitHub repository. This is where your Bicep code and automated workflow tests will run — separate from your original source repository. You can fork or sync your infrastructure code into this environment to use it for pre-deployment validation.
 
-#PR Workflow: workflow.pr.bicep.yaml
+\#PR Workflow: workflow\.pr.bicep.yaml
 Triggered by pull requests to main, this workflow spins up a temporary environment to test infrastructure changes in isolation.
 
 ### What It Does
@@ -190,13 +191,13 @@ However, while AVMs provide confidence in the **individual modules**, there’s 
 
 By combining AVMs with Symphony:
 
-- You get reusable, trusted building blocks from Microsoft
-- You validate the complete deployment as it will behave in your cloud environment
-- You catch environment-specific misconfigurations before they become production issues
+* You get reusable, trusted building blocks from Microsoft
+* You validate the complete deployment as it will behave in your cloud environment
+* You catch environment-specific misconfigurations before they become production issues
 
 In short, AVMs are a solid foundation — Symphony helps prove that the house you’ve built on that foundation won’t fall over when you turn it on.
 
-It’s worth exploring AVMs as part of your strategy — possibly the topic of a follow-up post.
+Look out for my next post where I will setup a real life example of where symphony can be used.
 
 ## Conclusion
 
