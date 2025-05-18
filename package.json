@@ -30,6 +30,7 @@
     "@giscus/react": "^3.1.0",
     "@headlessui/react": "^2.2.0",
     "@tailwindcss/typography": "^0.5.14",
+    "@vercel/analytics": "^1.5.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
