@@ -1,6 +1,7 @@
 import React, { PropsWithChildren } from "react";
 import { LayoutProvider } from "./layout-context";
-import { Analytics } from '@vercel/analytics/react'
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import client from "../../tina/__generated__/client";
 import Header from "../nav/header";
 import Footer from "../nav/footer";
@@ -18,6 +19,7 @@ export default async function Layout({ children, rawPageData }: LayoutProps) {
   return (
     <LayoutProvider globalSettings={globalData.global} pageData={rawPageData}>
       <Analytics />
+      <SpeedInsights />
       <Header />
       <main
       
