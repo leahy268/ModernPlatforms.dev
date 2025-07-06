@@ -1,7 +1,9 @@
 ---
 title: Entra API-Driven Inbound Provisioning
 heroImg: /uploads/API-Driven-Provisioning.png
-excerpt: Simplify user provisioning with Entra API-driven inbound provisioning—quick setup, straightforward licensing, and easy integration.
+excerpt: >
+  Simplify user provisioning with Entra API-driven inbound provisioning—quick
+  setup, straightforward licensing, and easy integration.
 author: content/authors/warwick.md
 date: 2025-07-06T14:00:00.000Z
 ---
@@ -14,9 +16,9 @@ As a former System Administrator, I've experienced firsthand how critical timely
 
 To use API-driven inbound provisioning, you'll need:
 
-- **Microsoft Entra ID Premium P1 license** (most enterprises already have this)
-- **Entra Cloud Connect** installed and configured
-- Access to the **Azure Portal** for configuration
+* **Microsoft Entra ID Premium P1 license** (most enterprises already have this)
+* **Entra Cloud Connect** installed and configured
+* Access to the **Azure Portal** for configuration
 
 ## How Simple Is It?
 
@@ -24,9 +26,9 @@ Unlike traditional user synchronization solutions, Entra API-driven inbound prov
 
 Key benefits include:
 
-- **Minimal infrastructure overhead**: No heavy server-side software required
-- **Immediate results**: Real-time updates to user accounts
-- **Flexible integration**: Supports integration with diverse data sources, including flat files, SQL databases, and APIs
+* **Minimal infrastructure overhead**: No heavy server-side software required
+* **Immediate results**: Real-time updates to user accounts
+* **Flexible integration**: Supports integration with diverse data sources, including flat files, SQL databases, and APIs
 
 ## Licensing
 
@@ -35,7 +37,7 @@ API-driven inbound provisioning is included with your existing Microsoft Entra I
 1. Navigate to **Azure Portal > Entra ID > Licenses**.
 2. Confirm your subscription shows **Premium P1** or higher.
 
-_(Screenshot placeholder)_
+*(Screenshot placeholder)*
 
 ## Setting up Entra API Provisioning
 
@@ -43,57 +45,57 @@ Follow these steps to configure your Entra API-driven inbound provisioning:
 
 ### Step 1: Configure the Entra Inbound Provisioning API Application
 
-- Log in to the Azure Portal.
-- Navigate to **Azure Portal > Entra ID > Enterprise Applications**.
-- Select **New Application** and search for "Inbound Provisioning API".
-- Configure the application according to your target (Entra ID or Active Directory).
+* Log in to the Azure Portal.
+* Navigate to **Azure Portal > Entra ID > Enterprise Applications**.
+* Select **New Application** and search for "Inbound Provisioning API".
+* Configure the application according to your target (Entra ID or Active Directory).
 
-_(Screenshot placeholder)_
+*(Screenshot placeholder)*
 
 ### Step 2: Connect Your Source System
 
 Depending on your source data (such as an export to a CSV file or direct SQL database connection), set up the necessary Azure resources:
 
-- Key Vault (to securely store connection details or credentials)
-- Automation Account
-- Storage Account (for flat file exports)
-- Logic App
+* Key Vault (to securely store connection details or credentials)
+* Automation Account
+* Storage Account (for flat file exports)
+* Logic App
 
-_(Screenshot placeholder)_
+*(Screenshot placeholder)*
 
 ### Step 3: Customize the PowerShell Runbook and Attribute Mappings
 
-- Create a PowerShell script (Runbook) to transform your source data into SCIM payloads.
-- Define custom attributes and configure the mappings within the provisioning settings.
+* Create a PowerShell script (Runbook) to transform your source data into SCIM payloads.
+* Define custom attributes and configure the mappings within the provisioning settings.
 
-_(Screenshot placeholder)_
+*(Screenshot placeholder)*
 
 ### Step 4: Enable Provisioning and Monitor Logs
 
-- Activate the provisioning service and Logic App.
-- Monitor provisioning activity through logs and diagnostics in the Microsoft Entra admin portal.
+* Activate the provisioning service and Logic App.
+* Monitor provisioning activity through logs and diagnostics in the Microsoft Entra admin portal.
 
-_(Screenshot placeholder)_
+*(Screenshot placeholder)*
 
 ## Attribute Mapping
 
 Attribute mapping is straightforward and allows you to define clearly how your source attributes map to Entra ID user properties. Typical mappings might include:
 
-| Source Attribute       | Entra Attribute     |
-|------------------------|---------------------|
-| `username`             | `userPrincipalName` |
-| `email`                | `mail`              |
-| `first_name`           | `givenName`         |
-| `last_name`            | `surname`           |
-| `employee_number`      | `employeeId`        |
-| `department`           | `department`        |
+| Source Attribute  | Entra Attribute     |
+| ----------------- | ------------------- |
+| `username`        | `userPrincipalName` |
+| `email`           | `mail`              |
+| `first_name`      | `givenName`         |
+| `last_name`       | `surname`           |
+| `employee_number` | `employeeId`        |
+| `department`      | `department`        |
 
 You can manage these mappings easily via the Azure Portal:
 
-- Open **Azure Portal > Entra ID > Provisioning**
-- Select **Attribute Mappings** to configure custom mappings
+* Open **Azure Portal > Entra ID > Provisioning**
+* Select **Attribute Mappings** to configure custom mappings
 
-_(Screenshot placeholder)_
+*(Screenshot placeholder)*
 
 ## Integrating with Logic Apps
 
@@ -161,8 +163,8 @@ Here's an example HTTP action configuration:
 }
 ```
 
-_(Screenshot placeholder)_
+*(Screenshot placeholder)*
 
 ## Conclusion
 
-Entra API-driven inbound provisioning provides an efficient, low-maintenance solution to user management, leveraging familiar tools and your existing licenses. With straightforward attribute mapping, easy-to-use Logic Apps, and minimal setup requirements, your provisioning tasks can become simpler than ever.
+Entra API-driven inbound provisioning provides an efficient, low-maintenance solution to user management, leveraging familiar tools and your existing licenses. With straightforward attribute mapping, easy-to-use Logic Apps, and minimal setup requirements, your provisioning tasks can become simpler than ever.xxx
