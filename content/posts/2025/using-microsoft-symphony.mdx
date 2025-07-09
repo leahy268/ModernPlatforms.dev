@@ -31,23 +31,6 @@ To get started, clone the Symphony repository and follow the setup instructions:
 > On Windows, using **WSL** is recommended for ease of setup.
 
 ```bash
-# Clone the Symphony repo
-git clone https://github.com/microsoft/symphony.git && cd symphony
-
-# Login to Azure
-az login
-
-# Set the target subscription
-az account set --subscription <TargetSubscriptionId>
-
-# Source the CLI setup
-source setup.sh
-
-# Deploy Symphony dependencies
-symphony provision
-
-# Configure the orchestrator (GitHub or Azure DevOps, with Bicep or Terraform)
-symphony pipeline config <azdo|github> <terraform|bicep>
 ```
 
 During setup, you’ll be prompted for:
@@ -131,55 +114,11 @@ Symphony uses **[Pester](https://pester.dev/)** (a PowerShell test framework) to
 Here’s an example of what a typical test file looks like:
 
 ```powershell
-BeforeAll {
-  Import-Module BenchPress.Azure
-
-  $storageAccountResourceGroupName = $env:storageAccountResourceGroupName
-  $storageAccountName = $env:storageAccountName
-  $appConfigResourceGroupName = $env:appConfigResourceGroupName
-  $appConfigAccountName = $env:appConfigAccountName
-  $appConfigItemsLength = $env:appConfigItemsLength
-}
-
-Describe "End to End Tests" {
-  Context "Test end to end" {
-    It "should check the parameters and environment variables configured correctly" {
-      $storageAccountResourceGroupName | Should -Not -Be $Null
-      $storageAccountName | Should -Not -Be $Null
-      $appConfigResourceGroupName | Should -Not -Be $Null
-      $appConfigAccountName | Should -Not -Be $Null
-      $appConfigItemsLength | Should -BeGreaterThan 0
-    }
-
-    It "should check the storage account is ready" {
-      $storageAccountResource = Confirm-AzBPStorageAccount -ResourceGroupName $storageAccountResourceGroupName -Name $storageAccountName
-      $storageAccountResource | Should -Be -Not $null
-    }
-
-    It "should check the storage account is configured correctly" {
-      $storageAccountResource = Confirm-AzBPStorageAccount -ResourceGroupName $storageAccountResourceGroupName -Name $storageAccountName
-
-      $storageAccountResource.ResourceDetails.ProvisioningState | Should -Be "Succeeded"
-      $storageAccountResource.ResourceDetails.Kind | Should -Be "StorageV2"
-      $storageAccountResource.ResourceDetails.Sku.Name | Should -Be "Standard_LRS"
-      $storageAccountResource.ResourceDetails.EnableHttpsTrafficOnly | Should -Be $true
-    }
-
-    It "should check the app config is ready" {
-      $appConfigResource = Get-AzBPResource -ResourceName $appConfigAccountName -ResourceGroupName $appConfigResourceGroupName
-      $appConfigResource | Should -Be -Not $null
-    }
-  }
-}
 ```
 
 To extend these tests, you can verify that the storage account has a **private endpoint** attached. Here's an additional test you could add:
 
 ```powershell
-It "should have a private endpoint configured for the storage account" {
-  $peResources = Get-AzBPPrivateEndpoints -ResourceGroupName $storageAccountResourceGroupName -TargetResourceName $storageAccountName
-  $peResources.Count | Should -BeGreaterThan 0
-}
 ```
 
 This confirms that your storage account is securely accessible only from within your virtual network — a common security best practice in enterprise environments.
