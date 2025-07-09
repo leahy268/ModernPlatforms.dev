@@ -13,7 +13,7 @@ export default function NavItems({ navs }: { navs: any }) {
     <ul className="flex gap-3 sm:gap-5 tracking-wide">
       {navs.map((item) => (
         <li key={item.href}>
-          <Link
+          <Link  
             data-tina-field={tinaField(item, "label")}
             href={`/${item.href}`}
             className={`text-white text-sm sm:text-base font-medium px-2 py-1 transition duration-150 ease-out hover:opacity-80 
