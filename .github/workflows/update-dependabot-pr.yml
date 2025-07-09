@@ -7,6 +7,8 @@ on:
 jobs:
   update-tinacms:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       # Clone repo
       - name: Check out repo to update
