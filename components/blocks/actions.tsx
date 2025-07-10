@@ -38,7 +38,7 @@ const invertedButtonColorClasses = {
 
 const linkButtonColorClasses = {
   blue: "text-blue-600 dark:text-blue-400 hover:text-blue-400 dark:hover:text-blue-200",
-  teal: "ttext-teal-600 dark:text-teal-400 hover:text-teal-400 dark:hover:text-teal-200",
+  teal: "text-teal-600 dark:text-teal-400 hover:text-teal-400 dark:hover:text-teal-200",
   green:
     "text-green-600 dark:text-green-400 hover:text-green-400 dark:hover:text-green-200",
   red: "text-red-600 dark:text-red-400 hover:text-red-400 dark:hover:text-red-200",
