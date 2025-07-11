@@ -4,13 +4,14 @@ import PostsClientPage from "./client-page";
 import { cookies } from "next/headers";
 
 export default async function PostsPage() {
+  const cookieStore = await cookies();
   let posts = await client.queries.postConnection({
     sort: "date",
-  },
+    },
     {
       fetchOptions: {
         headers: {
-          'x-branch': cookies().get('x-branch')?.value || process.env.NEXT_PUBLIC_TINA_BRANCH || 'main',
+          'x-branch': cookieStore.get('x-branch')?.value || process.env.NEXT_PUBLIC_TINA_BRANCH || 'main',
         }
       }
     }
