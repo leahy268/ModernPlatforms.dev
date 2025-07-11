@@ -2,6 +2,7 @@ import React from "react";
 import client from "@/tina/__generated__/client";
 import Layout from "@/components/layout/layout";
 import ClientPage from "./client-page";
+import { cookies } from "next/headers";
 
 export default async function Home({
   params,
@@ -10,7 +11,14 @@ export default async function Home({
 }) {
   const data = await client.queries.page({
     relativePath: `${params.filename.join("/")}.mdx`,
-  });
+  },
+    {
+      fetchOptions: {
+        headers: {
+          'x-branch': cookies().get('tina-branch')?.value || process.env.NEXT_PUBLIC_TINA_BRANCH || 'main',
+        }
+      }
+    });
 
   return (
     <Layout rawPageData={data}>
