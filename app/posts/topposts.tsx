@@ -1,14 +1,22 @@
 import client from "@/tina/__generated__/client";
 import { PostConnection, PostConnectionEdges, Post } from "@/tina/__generated__/types";
+import { cookies } from "next/headers";
 
 
 export default async function TopPosts({ numPosts = 4 }: { numPosts?: number }) {
   console.log("⚡ Fetching TopPosts with numPosts:", numPosts);
-
+  const branch = cookies().get('x-branch')?.value || process.env.NEXT_PUBLIC_TINA_BRANCH || 'main';
   let posts = await client.queries.postConnection({
     sort: "date",
     last: numPosts, 
-  });
+  },
+  {    fetchOptions: {
+      headers: {
+        'x-branch': branch, // Use the branch from cookies or environment variable
+      },
+    },
+  }
+);
 
   console.log("✅ Fetched posts count:", posts.data?.postConnection.edges.length);
 
