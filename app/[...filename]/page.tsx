@@ -15,7 +15,7 @@ export default async function Home({
     {
       fetchOptions: {
         headers: {
-          'x-branch': cookies().get('tina-branch')?.value || process.env.NEXT_PUBLIC_TINA_BRANCH || 'main',
+          'x-branch': cookies().get('x-branch')?.value || process.env.NEXT_PUBLIC_TINA_BRANCH || 'main',
         }
       }
     });
