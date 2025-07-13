@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import { Inter as FontSans, Lato, Nunito } from "next/font/google";
 import { cn } from "@/lib/utils";
 import client from "@/tina/__generated__/client";
+import { getTinaFetchOptions } from "@/lib/tinaFetchOptions";
 
 import "@/styles.css";
 
@@ -32,9 +33,10 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const globalQuery = await client.queries.global({
-    relativePath: "index.json",
-  });
+  const globalQuery = await client.queries.global(
+    { relativePath: "index.json" },
+    await getTinaFetchOptions()
+  );
   const global = globalQuery.data.global;
 
   const selectFont = (fontName: string) => {

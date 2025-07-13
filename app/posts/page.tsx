@@ -1,21 +1,13 @@
 import Layout from "@/components/layout/layout";
 import client from "@/tina/__generated__/client";
 import PostsClientPage from "./client-page";
-import { cookies } from "next/headers";
+import { getTinaFetchOptions } from "@/lib/tinaFetchOptions";
 
 export default async function PostsPage() {
-  const cookieStore = await cookies();
-  let posts = await client.queries.postConnection({
-    sort: "date",
-    },
-    {
-      fetchOptions: {
-        headers: {
-          'x-branch': cookieStore.get('x-branch')?.value || process.env.NEXT_PUBLIC_TINA_BRANCH || 'main',
-        }
-      }
-    }
-);
+  let posts = await client.queries.postConnection(
+    { sort: "date" },
+    await getTinaFetchOptions()
+  );
   const allPosts = posts;
 
   while (posts.data?.postConnection.pageInfo.hasNextPage) {

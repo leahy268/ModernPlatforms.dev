@@ -2,24 +2,17 @@ import React from "react";
 import client from "@/tina/__generated__/client";
 import Layout from "@/components/layout/layout";
 import ClientPage from "./client-page";
-import { cookies } from "next/headers";
+import { getTinaFetchOptions } from "@/lib/tinaFetchOptions";
 
 export default async function Home({
   params,
 }: {
   params: { filename: string[] };
 }) {
-  const cookieStore = await cookies();
-  const data = await client.queries.page({
-    relativePath: `${params.filename.join("/")}.mdx`,
-  },
-    {
-      fetchOptions: {
-        headers: {
-          'x-branch': cookieStore.get('x-branch')?.value || process.env.NEXT_PUBLIC_TINA_BRANCH || 'main',
-        }
-      }
-    });
+  const data = await client.queries.page(
+    { relativePath: `${params.filename.join("/")}.mdx` },
+    await getTinaFetchOptions()
+  );
 
   return (
     <Layout rawPageData={data}>

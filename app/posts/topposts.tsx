@@ -1,14 +1,15 @@
 import client from "@/tina/__generated__/client";
+import { getTinaFetchOptions } from "@/lib/tinaFetchOptions";
 import { PostConnection, PostConnectionEdges, Post } from "@/tina/__generated__/types";
 
 
 export default async function TopPosts({ numPosts = 4 }: { numPosts?: number }) {
   console.log("⚡ Fetching TopPosts with numPosts:", numPosts);
 
-  let posts = await client.queries.postConnection({
-    sort: "date",
-    last: numPosts, 
-  });
+  let posts = await client.queries.postConnection(
+    { sort: "date", last: numPosts },
+    await getTinaFetchOptions()
+  );
 
   console.log("✅ Fetched posts count:", posts.data?.postConnection.edges.length);
 
