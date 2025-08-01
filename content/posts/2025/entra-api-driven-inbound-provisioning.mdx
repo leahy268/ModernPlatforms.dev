@@ -1,7 +1,7 @@
 ---
 title: Entra API-Driven Inbound Provisioning
-heroImg: /uploads/Blogs/API-Driven-Provisioning.png
 category: Identity
+heroImg: /uploads/Blogs/API-Driven-Provisioning.png
 excerpt: >
   Simplify user provisioning with Entra API-driven inbound provisioning—quick
   setup, straightforward licensing, and easy integration.
@@ -35,10 +35,10 @@ Key benefits include:
 
 API-driven inbound provisioning is included with your existing Microsoft Entra ID Premium P1 subscription, commonly held by many organizations. If you're unsure about your licensing status, follow these steps:
 
-1. Navigate to **Azure Portal > Entra ID > Licenses**.
+1. Navigate to **Entra Portal | Overview**.
 2. Confirm your subscription shows **Premium P1** or higher.
 
-*(Screenshot placeholder)*
+**![](/uploads/Blogs/IDGovernance.png)
 
 ## Setting up Entra API Provisioning
 
@@ -47,11 +47,11 @@ Follow these steps to configure your Entra API-driven inbound provisioning:
 ### Step 1: Configure the Entra Inbound Provisioning API Application
 
 * Log in to the Azure Portal.
-* Navigate to **Azure Portal > Entra ID > Enterprise Applications**.
-* Select **New Application** and search for "Inbound Provisioning API".
-* Configure the application according to your target (Entra ID or Active Directory).
+* Navigate to **Entra Portal | Enterprise Apps**.
+* Select **New Application** and search for "API-driven provisioning".
+* Select the application according to your target (Entra ID or Active Directory).
 
-*(Screenshot placeholder)*
+**![](/uploads/Blogs/API-Driven-Inbound-Provisioning.png)
 
 ### Step 2: Connect Your Source System
 
@@ -62,21 +62,20 @@ Depending on your source data (such as an export to a CSV file or direct SQL dat
 * Storage Account (for flat file exports)
 * Logic App
 
-*(Screenshot placeholder)*
+**![](/uploads/Blogs/LogicApp.png)
 
-### Step 3: Customize the PowerShell Runbook and Attribute Mappings
+### Step 3: Customize Logic App and Attribute Mappings
 
-* Create a PowerShell script (Runbook) to transform your source data into SCIM payloads.
+* Create a Logic App to transform your source data into SCIM payloads.
 * Define custom attributes and configure the mappings within the provisioning settings.
-
-*(Screenshot placeholder)*
+* ![](/uploads/Blogs/AttributeMapping.png)
 
 ### Step 4: Enable Provisioning and Monitor Logs
 
 * Activate the provisioning service and Logic App.
 * Monitor provisioning activity through logs and diagnostics in the Microsoft Entra admin portal.
 
-*(Screenshot placeholder)*
+**![](/uploads/Blogs/ProvisioningLogs.png)
 
 ## Attribute Mapping
 
