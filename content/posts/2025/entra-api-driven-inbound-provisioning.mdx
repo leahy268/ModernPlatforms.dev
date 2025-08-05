@@ -38,7 +38,7 @@ API-driven inbound provisioning is included with your existing Microsoft Entra I
 1. Navigate to **Entra Portal | Overview**.
 2. Confirm your subscription shows **Premium P1** or higher.
 
-**![](/uploads/Blogs/IDGovernance.png)
+\*\*![](/uploads/Blogs/IDGovernance.png)
 
 ## Setting up Entra API Provisioning
 
@@ -51,7 +51,7 @@ Follow these steps to configure your Entra API-driven inbound provisioning:
 * Select **New Application** and search for "API-driven provisioning".
 * Select the application according to your target (Entra ID or Active Directory).
 
-**![](/uploads/Blogs/API-Driven-Inbound-Provisioning.png)
+\*\*![](/uploads/Blogs/API-Driven-Inbound-Provisioning.png)
 
 ### Step 2: Connect Your Source System
 
@@ -62,7 +62,7 @@ Depending on your source data (such as an export to a CSV file or direct SQL dat
 * Storage Account (for flat file exports)
 * Logic App
 
-**![](/uploads/Blogs/LogicApp.png)
+\*\*![](/uploads/Blogs/LogicApp.png)
 
 ### Step 3: Customize Logic App and Attribute Mappings
 
@@ -75,7 +75,7 @@ Depending on your source data (such as an export to a CSV file or direct SQL dat
 * Activate the provisioning service and Logic App.
 * Monitor provisioning activity through logs and diagnostics in the Microsoft Entra admin portal.
 
-**![](/uploads/Blogs/ProvisioningLogs.png)
+![](/uploads/Blogs/ProvisioningLogs.png)
 
 ## Attribute Mapping
 
@@ -108,62 +108,20 @@ Microsoft Logic Apps simplifies the integration process significantly, allowing 
 3. Parse your flat file (CSV/JSON) with the **Parse JSON** or **Compose** actions.
 4. Use the HTTP action to provision users in Entra ID via the Graph API.
 
-### SQL Database Integration
+### Use a webhook
+
+Many SAAS HR products such as “HiBob” allow webhooks which can trigger every time an employee record is modified or created.
 
 1. **Create a new Logic App**.
-2. Use the **"When an item is created or modified (V2)"** SQL Server trigger.
-3. Use an HTTP action to send provisioning data to the Entra API endpoint.
-4. Configure the fields mapping according to your database schema.
+2. Use the **"When a HTTP request is received"** 
+3. Add a webhook to HIBob to trigger on record change [https://apidocs.hibob.com/reference/employee-events-v2](https://apidocs.hibob.com/reference/employee-events-v2)
+4. Get the employee data from the Rest API
+5. Use the HTTP action to provision users in Entra ID via the Graph API.
 
 Here's an example HTTP action configuration:
 
 ```json
-{
-  "method": "POST",
-  "uri": "https://graph.microsoft.com/v1.0/servicePrincipals/{servicePrincipalId}/synchronization/jobs/{jobId}/bulkUpload",
-  "headers": {
-    "Authorization": "Bearer {your-token}",
-    "Content-Type": "application/json"
-  },
-  "body": {
-    "schemas": [
-      "urn:ietf:params:scim:api:messages:2.0:BulkRequest"
-    ],
-    "Operations": [
-      {
-        "method": "POST",
-        "bulkId": "unique-bulk-id",
-        "path": "/Users",
-        "data": {
-          "schemas": [
-            "urn:ietf:params:scim:schemas:core:2.0:User",
-            "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
-          ],
-          "externalId": "user-external-id",
-          "userName": "username",
-          "displayName": "User Display Name",
-          "name": {
-            "givenName": "FirstName",
-            "familyName": "LastName"
-          },
-          "active": true,
-          "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
-            "department": "User Department",
-            "division": "User Division",
-            "employeeNumber": "EmployeeNumber",
-            "manager": {
-              "value": "ManagerExternalId"
-            }
-          }
-        }
-      }
-    ],
-    "failOnErrors": true
-  }
-}
 ```
-
-*(Screenshot placeholder)*
 
 ## Conclusion
 
