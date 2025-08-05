@@ -116,7 +116,8 @@ Many SAAS HR products such as “HiBob” allow webhooks which can trigger every
 2. Use the **"When a HTTP request is received"** 
 3. Add a webhook to HIBob to trigger on record change [https://apidocs.hibob.com/reference/employee-events-v2](https://apidocs.hibob.com/reference/employee-events-v2)
 4. Get the employee data from the Rest API
-5. Use the HTTP action to provision users in Entra ID via the Graph API.
+5. Create the BulkUser JSON from the employee data
+6. Use the HTTP action to provision users in Entra ID via the Graph API.
 
 Here's an example HTTP action configuration:
 
