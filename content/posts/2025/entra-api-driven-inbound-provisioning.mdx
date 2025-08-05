@@ -21,15 +21,13 @@ To use API-driven inbound provisioning, you'll need:
 * **Entra Cloud Connect** installed and configured
 * Access to the **Azure Portal** for configuration
 
-## How Simple Is It?
+## Key Advantages
 
-Unlike traditional user synchronization solutions, Entra API-driven inbound provisioning requires minimal setup and infrastructure. Leveraging a modern RESTful API, it provides real-time provisioning, updates, and deactivation directly from your existing systems.
+API-driven inbound provisioning simplifies user management compared to traditional synchronization methods, offering:
 
-Key benefits include:
-
-* **Minimal infrastructure overhead**: No heavy server-side software required
-* **Immediate results**: Real-time updates to user accounts
-* **Flexible integration**: Supports integration with diverse data sources, including flat files, SQL databases, and APIs
+* Minimal Infrastructure: No need for heavy, server-side software.
+* Real-Time Updates: Instantly creates, updates, and disables accounts.
+* Flexible Integration: Easily connects with data sources like flat files, SQL databases, APIs, or SaaS platforms.
 
 ## Licensing
 
@@ -38,7 +36,7 @@ API-driven inbound provisioning is included with your existing Microsoft Entra I
 1. Navigate to **Entra Portal | Overview**.
 2. Confirm your subscription shows **Premium P1** or higher.
 
-\*\*![](/uploads/Blogs/IDGovernance.png)
+![](/uploads/Blogs/IDGovernance.png)
 
 ## Setting up Entra API Provisioning
 
@@ -51,7 +49,7 @@ Follow these steps to configure your Entra API-driven inbound provisioning:
 * Select **New Application** and search for "API-driven provisioning".
 * Select the application according to your target (Entra ID or Active Directory).
 
-\*\*![](/uploads/Blogs/API-Driven-Inbound-Provisioning.png)
+![](/uploads/Blogs/API-Driven-Inbound-Provisioning.png)
 
 ### Step 2: Connect Your Source System
 
@@ -62,7 +60,7 @@ Depending on your source data (such as an export to a CSV file or direct SQL dat
 * Storage Account (for flat file exports)
 * Logic App
 
-\*\*![](/uploads/Blogs/LogicApp.png)
+![](/uploads/Blogs/LogicApp.png)
 
 ### Step 3: Customize Logic App and Attribute Mappings
 
