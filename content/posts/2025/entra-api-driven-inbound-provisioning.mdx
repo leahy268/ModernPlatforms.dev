@@ -67,7 +67,8 @@ Depending on your source data (such as an export to a CSV file or direct SQL dat
 
 * Create a Logic App to transform your source data into SCIM payloads.
 * Define custom attributes and configure the mappings within the provisioning settings.
-* ![](/uploads/Blogs/AttributeMapping.png)
+
+![](/uploads/Blogs/AttributeMapping.png)
 
 ### Step 4: Enable Provisioning and Monitor Logs
 
@@ -94,7 +95,7 @@ You can manage these mappings easily via the Azure Portal:
 * Open **Azure Portal > Entra ID > Provisioning**
 * Select **Attribute Mappings** to configure custom mappings
 
-**![](/uploads/Blogs/AttributeMapping.png)
+\*\*![](/uploads/Blogs/AttributeMapping.png)
 
 ## Integrating with Logic Apps
 
@@ -112,7 +113,7 @@ Microsoft Logic Apps simplifies the integration process significantly, allowing 
 Many SAAS HR products such as “HiBob” allow webhooks which can trigger every time an employee record is modified or created.
 
 1. **Create a new Logic App**.
-2. Use the **"When a HTTP request is received"** 
+2. Use the **"When a HTTP request is received"**
 3. Add a webhook to HIBob to trigger on record change [https://apidocs.hibob.com/reference/employee-events-v2](https://apidocs.hibob.com/reference/employee-events-v2)
 4. Get the employee data from the Rest API
 5. Create the BulkUser JSON from the employee data
