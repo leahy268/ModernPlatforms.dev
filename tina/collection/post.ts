@@ -45,7 +45,7 @@ const Post: Collection = {
       label: "Posted Date",
       name: "date",
       ui: {
-        dateFormat: "MMMM DD YYYY",
+        dateFormat: "DD MM YYYY",
         timeFormat: "hh:mm A",
       },
     },

@@ -26,7 +26,7 @@ export default function Header() {
       <Container size="small" className="py-2 relative max-w-6xl mx-auto">
         <div className="flex items-center justify-between gap-6">
           <h4 className="select-none text-lg font-bold tracking-tight transition duration-150 ease-out transform">
-            <Link
+            <Link key={header.name}
               href="/"
               className="flex gap-1 items-center whitespace-nowrap tracking-[.002em]"
             >

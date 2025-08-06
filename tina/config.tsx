@@ -11,6 +11,8 @@ const config = defineConfig({
   branch:
     process.env.NEXT_PUBLIC_TINA_BRANCH! || // custom branch env override
     process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF! || // Vercel branch env
+    process.env.TINA_BRANCH ||
+    process.env.VERCEL_GIT_COMMIT_REF ||
     process.env.HEAD!, // Netlify branch env
   token: process.env.TINA_TOKEN!,
   media: {
@@ -32,6 +34,14 @@ const config = defineConfig({
   },
   schema: {
     collections: [Page, Post, Author, Global],
+  },
+  search: {
+    tina: {
+      indexerToken: '1672f82bae65aa8e0a043cecc3be52b3b6aecf42',
+      stopwordLanguages: ['eng'],
+    },
+    indexBatchSize: 100,
+    maxSearchIndexFieldLength: 100,
   },
 });
 
