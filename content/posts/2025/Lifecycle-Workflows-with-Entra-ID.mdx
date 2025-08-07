@@ -17,109 +17,108 @@ date: 2025-08-10T14:00:00.000Z
 
 Manual identity processes leave too much room for error—missed terminations, delayed access, and inconsistent onboarding. **Microsoft Entra ID Lifecycle Workflows** solve this by automating identity tasks for joiners, movers, and leavers, based on user attributes and events. In this post, we’ll walk through how to configure lifecycle workflows, what licensing is required, and whether it’s the right fit for your organization.
 
----
+***
 
 ## What Are Lifecycle Workflows?
 
 Lifecycle Workflows are a feature within Microsoft Entra ID Governance that automate tasks based on user lifecycle states:
 
-- **Joiner** → Account provisioning, group assignments, access packages, welcome emails, license assignments.
-- **Mover** → Updates to roles, group membership, attributes.
-- **Leaver** → Disable accounts, remove access, notify managers, and schedule deletions.
+* **Joiner** → Account provisioning, group assignments, access packages, welcome emails, license assignments.
+* **Mover** → Updates to roles, group membership, attributes.
+* **Leaver** → Disable accounts, remove access, notify managers, and schedule deletions.
 
 Everything runs via **no-code workflows**, triggered by time-based conditions (e.g. "2 days before start date") or attribute changes (like department or job title).
 
----
+***
 
 ## Licensing Requirements
 
 To use Lifecycle Workflows, you'll need:
 
-- **Microsoft Entra ID Governance SKU** (previously known as Azure AD Premium P2 with Entitlement Management)
-- **Microsoft Entra ID Premium P1 or P2 license** (assigned to each user in scope of the workflow)
-- An Azure subscription for optional features (e.g. Logic Apps integration, external automation)
+* **Microsoft Entra ID Governance SKU** (previously known as Azure AD Premium P2 with Entitlement Management)
+* **Microsoft Entra ID Premium P1 or P2 license** (assigned to each user in scope of the workflow)
+* An Azure subscription for optional features (e.g. Logic Apps integration, external automation)
 
- *Note: Entra ID Governance is a paid add-on and is not included in Microsoft 365 E3/E5 by default. You can license users individually or via EMS E5 bundles.*
-
----
+***
 
 ## Step-by-Step: How to Set Up a Lifecycle Workflow
 
-### 1. **Enable Microsoft Entra ID Governance**
+### 1. Go to Entitlement Management
 
-- Go to **Microsoft Entra Admin Center**
-- Navigate to **Identity Governance → Lifecycle Workflows**
-- If not enabled, activate your Entra ID Governance trial or subscription
+* Go to **Microsoft Entra Admin Center**
+* Navigate to **Entitlement Management → Lifecycle Workflows**
 
 ### 2. **Create a New Workflow**
 
-- Click **"Create workflow"**
-- Choose a template (e.g., *Onboard pre-hire*, *Terminate user*)
-- Give the workflow a name, description, and trigger condition (e.g., “On user’s hire date”)
+* Click **"Create workflow"**
+* Choose a template (e.g., *Onboard pre-hire*, *Terminate user*)
+* Give the workflow a name, description, and trigger condition (e.g., “On user’s hire date”)
+
+![](/uploads/Blogs/LifecycleWorkflows.png)
 
 ### 3. **Define Scope**
 
-- Select **target users** using filters (e.g., Department = 'Contractors', Job Title = 'Intern')
-- Define pre- or post- start/termination timing
+* Select **target users** using filters (e.g., Department = 'Contractors', Job Title = 'Intern')
+* Define pre- or post- start/termination timing
 
 ### 4. **Add Tasks**
 
-- Choose from built-in actions like:
-  - Assign licenses
-  - Add to groups
-  - Send email notifications
-  - Disable account
-  - Delay before deletion
-- Optionally add **custom logic** via PowerShell or Logic Apps
+* Choose from built-in actions like:
+  * Assign licenses
+  * Add to groups
+  * Send email notifications
+  * Disable account
+  * Delay before deletion
+* Optionally add **custom logic** via PowerShell or Logic Apps
 
 ### 5. **Publish and Monitor**
 
-- Review the summary and publish the workflow
-- Monitor executions under **Workflow history**
-- You can **test** with a small user group before scaling
+* Review the summary and publish the workflow
+* Monitor executions under **Workflow history**
+* You can **test** with a small user group before scaling
 
----
+***
 
 ## Example: Offboarding Workflow for Contractors
 
-| Step                     | Action                                |
-|--------------------------|----------------------------------------|
-| Trigger                  | 1 day after `employeeLeaveDateTime`   |
-| Remove from groups       | All contractor access groups           |
-| Notify                   | Email sent to manager and HR          |
-| Disable account          | Entra ID account disabled              |
-| Schedule deletion        | 30 days after disable                  |
+| Step               | Action                              |
+| ------------------ | ----------------------------------- |
+| Trigger            | 1 day after `employeeLeaveDateTime` |
+| Remove from groups | All contractor access groups        |
+| Notify             | Email sent to manager and HR        |
+| Disable account    | Entra ID account disabled           |
+| Schedule deletion  | 30 days after disable               |
 
----
+***
 
 ## Pros and Cons
 
 ### Pros
 
-- **Automation = Less Human Error**
-- **Repeatable & Auditable**: Clear logs and consistent logic
-- **Security-Driven**: Timely offboarding reduces access risk
-- **Integrated**: Connects with Entra ID, Access Packages, and External Tools
+* **Automation = Less Human Error**
+* **Repeatable & Auditable**: Clear logs and consistent logic
+* **Security-Driven**: Timely offboarding reduces access risk
+* **Integrated**: Connects with Entra ID, Access Packages, and External Tools
 
 ### Cons
 
-- **Requires Premium Licensing**: Entra Governance isn’t included in base plans
-- **Limited Custom Logic**: Advanced scenarios may require Logic Apps or Power Automate
-- **Attribute Dependency**: Requires clean, reliable user data (e.g., hire/termination dates)
+* **Requires Premium Licensing**: Entra Governance isn’t included in base plans
+* **Limited Custom Logic**: Advanced scenarios may require Logic Apps or Power Automate
+* **Attribute Dependency**: Requires clean, reliable user data (e.g., hire/termination dates)
 
----
+***
 
 ## When Should You Use Lifecycle Workflows?
 
 Lifecycle Workflows are ideal when:
 
-- You have **regular staff turnover** or contractor churn
-- You already use **Access Packages** or **Identity Governance**
-- You want to remove manual onboarding/offboarding processes
+* You have **regular staff turnover** or contractor churn
+* You already use **Access Packages** or **Identity Governance**
+* You want to remove manual onboarding/offboarding processes
 
 However, if your organization uses Workday or SAP for HR, **API-driven provisioning** might be better aligned.
 
----
+***
 
 ## Final Thoughts
 
@@ -127,8 +126,6 @@ Lifecycle Workflows bring scalable, secure automation to identity governance. Wh
 
 If you're ready to ditch spreadsheets and manual tickets, Lifecycle Workflows are a powerful place to start.
 
----
+***
 
 *Need help planning your joiner-mover-leaver strategy? Let’s talk about Entra ID Governance in your environment.*
-
-
