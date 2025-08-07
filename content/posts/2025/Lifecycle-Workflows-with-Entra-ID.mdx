@@ -46,17 +46,26 @@ To use Lifecycle Workflows, you'll need:
 ### 1. Go to Entitlement Management
 
 * Go to **Microsoft Entra Admin Center**
-* Navigate to **Entitlement Management → Lifecycle Workflows**
+* Navigate to **Entitlement Management → Lifecycle Workflows**![](/uploads/Blogs/LifecycleWorkflows.png)
 
-### 2. **Create a New Workflow**
+### 2. **Add Extra fields to your inbound provisioning.**
+
+The real power of lifecycle workflows comes when you use auto triggering of lifecycle events (leaver, joiner, mover)
+
+* Go to your enterprise App for inbound provisioning (See [https://modernplatforms.dev/posts/2025/entra-api-driven-inbound-provisioning](https://modernplatforms.dev/posts/2025/entra-api-driven-inbound-provisioning)) 
+* Add attribute mappings for at least HireDate and employeeLeaveDate
+
+![](/uploads/Blogs/ExtraAttributes.png)
+
+### 3. **Create a New Workflow**
 
 * Click **"Create workflow"**
 * Choose a template (e.g., *Onboard pre-hire*, *Terminate user*)
 * Give the workflow a name, description, and trigger condition (e.g., “On user’s hire date”)
 
-![](/uploads/Blogs/LifecycleWorkflows.png)
+![](/uploads/Blogs/OnHireDate.png)
 
-### 3. **Define Scope**
+### 4. **Define Scope**
 
 * Select **target users** using filters (e.g., Department = 'Contractors', Job Title = 'Intern')
 * Define pre- or post- start/termination timing
@@ -116,8 +125,6 @@ Lifecycle Workflows are ideal when:
 * You already use **Access Packages** or **Identity Governance**
 * You want to remove manual onboarding/offboarding processes
 
-However, if your organization uses Workday or SAP for HR, **API-driven provisioning** might be better aligned.
-
 ***
 
 ## Final Thoughts
@@ -128,4 +135,4 @@ If you're ready to ditch spreadsheets and manual tickets, Lifecycle Workflows ar
 
 ***
 
-*Need help planning your joiner-mover-leaver strategy? Let’s talk about Entra ID Governance in your environment.*
+*Need help planning your IDAM strategy? Let’s talk about Entra ID Governance in your environment.*
