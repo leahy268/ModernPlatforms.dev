@@ -15,7 +15,9 @@ author: content/authors/warwick.md
 date: 2025-08-10T14:00:00.000Z
 ---
 
-Manual identity processes leave too much room for error—missed terminations, delayed access, and inconsistent onboarding. **Microsoft Entra ID Lifecycle Workflows** solve this by automating identity tasks for joiners, movers, and leavers, based on user attributes and events. In this post, we’ll walk through how to configure lifecycle workflows, what licensing is required, and whether it’s the right fit for your organization.
+Manual identity processes leave too much room for error—missed terminations, delayed access, and inconsistent onboarding. 
+
+**Microsoft Entra ID Lifecycle Workflows** solve this by automating identity tasks for joiners, movers, and leavers, based on user attributes and events. In this post, we’ll walk through how to configure lifecycle workflows, what licensing is required, and whether it’s the right fit for your organization.
 
 ***
 
@@ -96,7 +98,7 @@ The real power of lifecycle workflows comes when you use auto triggering of life
 
 | Step            | Action                        |
 | --------------- | ----------------------------- |
-| Trigger         | on `employeeLeaveDateTime`    |
+| Trigger         | on `employeeLeaveDate`        |
 | Disable account | Entra ID account disabled     |
 | Notify          | Send email on user's last day |
 | Remove groups   | Remove user from all groups   |
