@@ -88,15 +88,16 @@ The real power of lifecycle workflows comes when you use auto triggering of life
 
 ***
 
-## Example: Offboarding Workflow for Contractors
+## Example: Offboarding Workflow
 
-| Step               | Action                              |
-| ------------------ | ----------------------------------- |
-| Trigger            | 1 day after `employeeLeaveDateTime` |
-| Remove from groups | All contractor access groups        |
-| Notify             | Email sent to manager and HR        |
-| Disable account    | Entra ID account disabled           |
-| Schedule deletion  | 30 days after disable               |
+| Step            | Action                        |
+| --------------- | ----------------------------- |
+| Trigger         | on `employeeLeaveDateTime`    |
+| Disable account | Entra ID account disabled     |
+| Notify          | Send email on user's last day |
+| Remove groups   | Remove user from all groups   |
+| Remove Teams    | Remove user from all Teams    |
+| Remove licenses | Remove all licenses for User  |
 
 ***
 
