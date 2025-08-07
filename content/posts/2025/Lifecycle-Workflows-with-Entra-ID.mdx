@@ -53,7 +53,7 @@ To use Lifecycle Workflows, you'll need:
 The real power of lifecycle workflows comes when you use auto triggering of lifecycle events (leaver, joiner, mover)
 
 * Go to your enterprise App for inbound provisioning (See [https://modernplatforms.dev/posts/2025/entra-api-driven-inbound-provisioning](https://modernplatforms.dev/posts/2025/entra-api-driven-inbound-provisioning)) 
-* Add attribute mappings for at least HireDate and employeeLeaveDate
+* Add attribute mappings for at least employeeHireDate and employeeLeaveDate
 
 ![](/uploads/Blogs/ExtraAttributes.png)
 
@@ -67,8 +67,10 @@ The real power of lifecycle workflows comes when you use auto triggering of life
 
 ### 4. **Define Scope**
 
-* Select **target users** using filters (e.g., Department = 'Contractors', Job Title = 'Intern')
+* Select target users using filters (e.g., Department = 'Contractors', Job Title = 'Intern')
 * Define pre- or post- start/termination timing
+
+![](/uploads/Blogs/Scope.png)
 
 ### 4. **Add Tasks**
 
@@ -78,7 +80,9 @@ The real power of lifecycle workflows comes when you use auto triggering of life
   * Send email notifications
   * Disable account
   * Delay before deletion
-* Optionally add **custom logic** via PowerShell or Logic Apps
+* Optionally add custom logic via Logic Apps
+
+![](/uploads/Blogs/Tasks.png)
 
 ### 5. **Publish and Monitor**
 
