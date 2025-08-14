@@ -124,30 +124,77 @@ Here's an example HTTP action configuration:
 ```json
 {
   "type": "Http",
-  "runAfter": {},
+  "runAfter": {
+    "Get_Employee_From_HiBob": [ "Succeeded" ]
+  },
   "inputs": {
     "method": "POST",
-    "uri": "https://api.hibob.com/v1/people/@{triggerBody()?['employeeId']}",
-    "headers": {
-      "Authorization": "Basic @{base64(concat(variables('HiBobServiceUserId'), ':', variables('HiBobApiToken')))}",
-      "Content-Type": "application/json",
-      "Accept": "application/json"
+    "uri": "https://graph.microsoft.com/v1.0/$batch",
+    "authentication": {
+      "type": "ManagedServiceIdentity",
+      "audience": "https://graph.microsoft.com"
     },
-    "body": {
-      "fields": [
-        "firstName",
-        "surname",
-        "work.email",
-        "work.title",
-        "work.department",
-        "work.startDate",
-        "personal.email",
-        "address",
-        "mobile"
-      ]
-    }
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": [
+      {
+        "bulkId": "@{guid()}", 
+        "data": {
+          "active": true,
+          "addresses": [
+            {
+              "locality": "@{body('Get_Employee_From_HiBob')?['work']?['address']}",
+              "type": "work"
+            }
+          ],
+          "displayName": "@{concat(body('Get_Employee_From_HiBob')?['firstName'], ' ', body('Get_Employee_From_HiBob')?['surname'])}",
+          "externalId": "@{body('Get_Employee_From_HiBob')?['id']}",
+          "name": {
+            "familyName": "@{body('Get_Employee_From_HiBob')?['surname']}",
+            "givenName": "@{body('Get_Employee_From_HiBob')?['firstName']}"
+          },
+          "phoneNumbers": [
+            {
+              "type": "work",
+              "value": "@{body('Get_Employee_From_HiBob')?['work']?['phone']}"
+            },
+            {
+              "type": "mobile",
+              "value": "@{body('Get_Employee_From_HiBob')?['mobile']}"
+            },
+            {
+              "type": "fax",
+              "value": ""
+            }
+          ],
+          "schemas": [
+            "urn:ietf:params:scim:schemas:core:2.0:User",
+            "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
+          ],
+          "title": "@{body('Get_Employee_From_HiBob')?['work']?['title']}",
+          "urn:ietf:params:scim:schemas:extension:contoso.local:1.0:User": {
+            "HireDate": "@{body('Get_Employee_From_HiBob')?['work']?['startDate']}",
+            "employeeLeaveDate": "@{body('Get_Employee_From_HiBob')?['work']?['endDate']}"
+          },
+          "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
+            "department": "@{body('Get_Employee_From_HiBob')?['work']?['department']}",
+            "division": "@{body('Get_Employee_From_HiBob')?['work']?['site']}",
+            "employeeNumber": "@{body('Get_Employee_From_HiBob')?['id']}",
+            "fax": "",
+            "manager": {
+              "value": "@{body('Get_Employee_From_HiBob')?['work']?['reportsTo']}"
+            }
+          },
+          "userName": "@{concat(first(toUpper(body('Get_Employee_From_HiBob')?['firstName'])), body('Get_Employee_From_HiBob')?['surname'])}"
+        },
+        "method": "POST",
+        "path": "/Users"
+      }
+    ]
   }
 }
+
 
 ```
 
