@@ -122,6 +122,33 @@ Many SAAS HR products such as “HiBob” allow webhooks which can trigger every
 Here's an example HTTP action configuration:
 
 ```json
+{
+  "type": "Http",
+  "runAfter": {},
+  "inputs": {
+    "method": "POST",
+    "uri": "https://api.hibob.com/v1/people/@{triggerBody()?['employeeId']}",
+    "headers": {
+      "Authorization": "Basic @{base64(concat(variables('HiBobServiceUserId'), ':', variables('HiBobApiToken')))}",
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    },
+    "body": {
+      "fields": [
+        "firstName",
+        "surname",
+        "work.email",
+        "work.title",
+        "work.department",
+        "work.startDate",
+        "personal.email",
+        "address",
+        "mobile"
+      ]
+    }
+  }
+}
+
 ```
 
 ## Conclusion
