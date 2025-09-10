@@ -31,7 +31,7 @@ There are two main types:
 In API-driven provisioning, you can use either type—but custom schema extensions are preferred for cloud-native HR-to-Entra scenarios.
 
 
-## &#x20;Registering Schema Extensions
+## Registering Schema Extensions
 
 To register a schema extension:
 
@@ -87,9 +87,9 @@ This lets you:
 
 Tips for Working with Extension Attributes
 
-🔒 Schema extensions are immutable once published (property names and types can’t be changed)
+Schema extensions are immutable once published (property names and types can’t be changed)
 
-⚠️ Avoid using extensionAttribute1–15 for new apps unless bridging with on-prem AD
+Avoid using extensionAttribute1–15 for new apps unless bridging with on-prem AD
 
 You can patch values in users using Graph API after provisioning if needed
 
@@ -120,5 +120,3 @@ Now, you can:
 Wrapping Up
 
 Extension attributes enable true identity enrichment in Microsoft Entra ID, especially when combined with API-driven provisioning. They allow IT and HR to meet in the middle—passing meaningful business context into the cloud directory, powering automation, access decisions, and governance.
-
-
