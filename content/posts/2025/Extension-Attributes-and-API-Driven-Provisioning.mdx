@@ -35,7 +35,6 @@ In API-driven provisioning, you can use either type—but custom schema extensio
 
 To register a schema extension:
 
-```xml
 POST https://graph.microsoft.com/v1.0/schemaExtensions
 Content-Type: application/json
 
@@ -54,12 +53,10 @@ Content-Type: application/json
     }
   ]
 }
-```
 
-```nginx
 extension_contosoIdentity_employeeRegion
 extension_contosoIdentity_costCentreCode
-```
+
 
 These can now be used in user objects, filtered in Graph queries, and mapped in API-based provisioning.
 
@@ -71,13 +68,11 @@ Extension attributes from your source system (e.g. Workday, Aurion, SAP) can be 
 
 These values are mapped into Entra ID using attribute mappings like:
 
-```json
 {
   "sourceAttributeName": "region",
   "targetAttributeName": "extension_contosoIdentity_employeeRegion"
 }
 
-```
 
 This lets you:
 
@@ -97,14 +92,13 @@ You can patch values in users using Graph API after provisioning if needed
 
 Imagine your HR system sends:
 
-```json
+
 {
   "userPrincipalName": "jane.doe@contoso.com",
   "division": "APAC",
   "costCentre": "IT045"
 }
 
-```
 
 You map these to:
 
@@ -120,5 +114,6 @@ Now, you can:
 Wrapping Up
 
 Extension attributes enable true identity enrichment in Microsoft Entra ID, especially when combined with API-driven provisioning. They allow IT and HR to meet in the middle—passing meaningful business context into the cloud directory, powering automation, access decisions, and governance.
+
 
 
