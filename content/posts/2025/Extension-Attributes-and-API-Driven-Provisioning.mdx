@@ -10,7 +10,7 @@ author: content/authors/warwick.md
 date: 2025-09-14
 ---
 
-Modern identity systems often require more than just first name, last name, and job title. With API-driven provisioning in Microsoft Entra ID, you can ingest enriched identity data—like cost centres, manager aliases, or internal classification codes—by mapping them to **extension attributes**.
+Modern identity systems often require more than just first name, last name, and job title. With API-driven provisioning in Microsoft Entra ID, you can ingest enriched identity data—like cost centres, manager aliases, or internal classification codes—by mapping them to extension attributes.
 
 This post explores:
 
@@ -25,8 +25,8 @@ Microsoft Entra ID supports schema extensions to hold custom identity metadata b
 
 There are two main types:
 
-* **Directory extension attributes **(e.g., \`extensionAttribute1–15\`, often synced from on-prem AD)
-* **Custom schema extensions** (e.g., \`extension\_{appId}\_{attributeName}\`)
+* **Directory extension attributes **(e.g., extensionAttribute1–15, often synced from on-prem AD)
+* **Custom schema extensions** (e.g., extension\_{appId}\_{attributeName})
 
 In API-driven provisioning, you can use either type—but custom schema extensions are preferred for cloud-native HR-to-Entra scenarios.
 
@@ -120,3 +120,4 @@ Now, you can:
 Wrapping Up
 
 Extension attributes enable true identity enrichment in Microsoft Entra ID, especially when combined with API-driven provisioning. They allow IT and HR to meet in the middle—passing meaningful business context into the cloud directory, powering automation, access decisions, and governance.
+
