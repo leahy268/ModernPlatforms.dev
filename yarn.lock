@@ -10538,7 +10538,7 @@ throttle-debounce@^3.0.1:
   resolved "https://registry.yarnpkg.com/throttle-debounce/-/throttle-debounce-3.0.1.tgz#32f94d84dfa894f786c9a1f290e7a645b6a19abb"
   integrity sha512-dTEWWNu6JmeVXY0ZYoPuH5cRIwc0MeGbJwah9KUNYSJwommQpCzTySTpEe8Gs1J23aeWEuAobe4Ag7EHVt/LOg==
 
-tinacms@2.8.3, tinacms@^2.8.2:
+tinacms@2.8.3, tinacms@^2.8.3:
   version "2.8.3"
   resolved "https://registry.yarnpkg.com/tinacms/-/tinacms-2.8.3.tgz#77eed8a051be210155822877bac9fb87075e2cd7"
   integrity sha512-n1riVKAsUGkjiS1pzaEc4EDAfA0X5irYFMxdxUv97uqGm53TB1djQxRbzjCpjVcPA29ZPXKpmYi5S8tyb8doSQ==
