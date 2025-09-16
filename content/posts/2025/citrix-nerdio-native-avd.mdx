@@ -1,113 +1,124 @@
 ---
-title: "Citrix, Nerdio, or Native AVD: Which Azure Virtual Desktop Platform Fits Your Organisation?"
+title: >-
+  Citrix, Nerdio, or Native AVD: Which Azure Virtual Desktop Platform Fits Your
+  Organisation?
 category: Identity
-heroImg: /uploads/Blogs/citrix-nerdio-avd.png
+heroImg: /uploads/Blogs/citrix-nerdio-avd1.png
 excerpt: >
-  When choosing between Citrix, Nerdio, and Native AVD in Azure, the decision
-  is less about end-user experience and more about your organisation's DevOps
-  maturity. This post explores which option best fits based on automation,
-  cost, and complexity.
+  When choosing between Citrix, Nerdio, and Native AVD in Azure, the decision is
+  less about end-user experience and more about your organisation's DevOps
+  maturity. This post explores which option best fits based on automation, cost,
+  and complexity.
 author: content/authors/warwick.md
-date: 2025-09-16
+date: 2025-09-16T00:00:00.000Z
 ---
 
 # Citrix, Nerdio, or Native AVD: Which Azure Virtual Desktop Platform Fits Your Organisation?
 
-When organisations ask, *“Which virtual desktop platform should we use in Azure?”* the right answer often depends less on features and more on **your DevOps maturity**.  
+When organisations ask, *“Which virtual desktop platform should we use in Azure?”* the right answer often depends less on features and more on **your DevOps maturity**.
 
-All three options—**Native Azure Virtual Desktop (AVD)**, **Nerdio Manager for Enterprise**, and **Citrix on Azure**—run on Azure infrastructure. What differs is how much responsibility you take on versus how much you hand off to a management layer.  
+All three options—**Native Azure Virtual Desktop (AVD)**, **Nerdio Manager for Enterprise**, and **Citrix on Azure**—run on Azure infrastructure. What differs is how much responsibility you take on versus how much you hand off to a management layer.
 
----
+***
 
 ## Native AVD: The Azure-First Choice
 
-Azure Virtual Desktop is Microsoft’s native VDI service. With Native AVD, you interact directly with Azure constructs—host pools, session hosts, images, scaling rules—without a third-party management layer.  
+Azure Virtual Desktop is Microsoft’s native VDI service. With Native AVD, you interact directly with Azure constructs—host pools, session hosts, images, scaling rules—without a third-party management layer.
 
 **Key Features**
-- **Azure-native integration**: Full alignment with Entra ID for conditional access, MFA, PIM, and lifecycle workflows.  
-- **Infrastructure-as-Code (IaC)**: Entire environments can be built and updated from Bicep or Terraform templates.  
-- **Custom scaling**: You define autoscaling via Azure Automation, Functions, or custom scripts.  
-- **Monitoring**: Integrated with Azure Monitor, Log Analytics, and Defender for Cloud.  
+
+* **Azure-native integration**: Full alignment with Entra ID for conditional access, MFA, PIM, and lifecycle workflows.
+* **Infrastructure-as-Code (IaC)**: Entire environments can be built and updated from Bicep or Terraform templates.
+* **Custom scaling**: You define autoscaling via Azure Automation, Functions, or custom scripts.
+* **Monitoring**: Integrated with Azure Monitor, Log Analytics, and Defender for Cloud.
 
 **Why It’s Good**
-- Lowest cost: no extra licensing beyond Azure consumption.  
-- Maximum flexibility: you can design every component to your standards.  
-- Ideal for DevOps teams who want to treat AVD like any other Azure workload (CI/CD pipelines, automated testing, blue/green host pool deployments).  
+
+* Lowest cost: no extra licensing beyond Azure consumption.
+* Maximum flexibility: you can design every component to your standards.
+* Ideal for DevOps teams who want to treat AVD like any other Azure workload (CI/CD pipelines, automated testing, blue/green host pool deployments).
 
 **Considerations**
-- More manual effort if you don’t have automation in place.  
-- Image lifecycle (patching, updating, rolling out) requires scripting or third-party tooling.  
 
-**Best Fit**: Enterprises with high DevOps maturity, or organisations already running IaC pipelines in Azure.  
+* More manual effort if you don’t have automation in place.
+* Image lifecycle (patching, updating, rolling out) requires scripting or third-party tooling.
 
----
+**Best Fit**: Enterprises with high DevOps maturity, or organisations already running IaC pipelines in Azure.
+
+***
 
 ## Nerdio Manager for Enterprise: The Automation Layer
 
-Nerdio sits directly on top of AVD. It doesn’t replace AVD—it enhances it with **automation, governance, and cost optimisation**. For many organisations, Nerdio is the “missing middle” between raw Azure and full-blown Citrix.  
+Nerdio sits directly on top of AVD. It doesn’t replace AVD—it enhances it with **automation, governance, and cost optimisation**. For many organisations, Nerdio is the “missing middle” between raw Azure and full-blown Citrix.
 
 **Key Features**
-- **Autoscaling**: Dynamically powers up/down session hosts based on user load and business hours. Supports:  
-  - Scale-in/out thresholds.  
-  - Schedule-based scaling (e.g., office hours).  
-  - Burst-to-Azure-Compute (temporarily add capacity).  
-- **Cost Optimisation**: Park VMs during off-hours, use reserved instances, or shift workloads to cheaper SKUs automatically.  
-- **Image Lifecycle Management**: Streamlines patching and updating golden images. You can roll new images into host pools with minimal downtime.  
-- **Delegated Administration**: RBAC-friendly console for IT teams, MSPs, or delegated admins. Makes it easy to manage multiple tenants.  
-- **Reporting & Monitoring**: Provides insights into session usage, costs, and scaling effectiveness.  
+
+* **Autoscaling**: Dynamically powers up/down session hosts based on user load and business hours. Supports:
+  * Scale-in/out thresholds.
+  * Schedule-based scaling (e.g., office hours).
+  * Burst-to-Azure-Compute (temporarily add capacity).
+* **Cost Optimisation**: Park VMs during off-hours, use reserved instances, or shift workloads to cheaper SKUs automatically.
+* **Image Lifecycle Management**: Streamlines patching and updating golden images. You can roll new images into host pools with minimal downtime.
+* **Delegated Administration**: RBAC-friendly console for IT teams, MSPs, or delegated admins. Makes it easy to manage multiple tenants.
+* **Reporting & Monitoring**: Provides insights into session usage, costs, and scaling effectiveness.
 
 **Why It’s Good**
-- Shrinks the operational overhead of AVD.  
-- Enables IT teams without deep DevOps skills to still run efficiently.  
-- Particularly valuable for MSPs managing multiple customers, or enterprises without large Azure engineering teams.  
+
+* Shrinks the operational overhead of AVD.
+* Enables IT teams without deep DevOps skills to still run efficiently.
+* Particularly valuable for MSPs managing multiple customers, or enterprises without large Azure engineering teams.
 
 **Considerations**
-- Licensing cost (though much lower than Citrix).  
-- You rely on Nerdio’s orchestration model—less IaC flexibility compared to Native AVD.  
 
-**Best Fit**: Mid-maturity organisations, MSPs, or enterprises leaving Citrix who want automation without building it all themselves.  
+* Licensing cost (though much lower than Citrix).
+* You rely on Nerdio’s orchestration model—less IaC flexibility compared to Native AVD.
 
----
+**Best Fit**: Mid-maturity organisations, MSPs, or enterprises leaving Citrix who want automation without building it all themselves.
+
+***
 
 ## Citrix on Azure: The Legacy Heavyweight
 
-Citrix has been the gold standard in enterprise VDI for decades. On Azure, Citrix is layered over AVD or Azure IaaS, providing additional tooling for management and user experience.  
+Citrix has been the gold standard in enterprise VDI for decades. On Azure, Citrix is layered over AVD or Azure IaaS, providing additional tooling for management and user experience.
 
 **Key Features**
-- **HDX Protocol**: Optimised delivery for graphics-heavy or latency-sensitive workloads (CAD, healthcare imaging, 3D rendering).  
-- **Advanced Session Management**: Mature tools for reconnection, failover, and multi-site environments.  
-- **Hybrid Flexibility**: Can span on-premises datacentres and Azure simultaneously.  
-- **Ecosystem Add-ons**: App layering, profile management, and third-party integrations built over years.  
+
+* **HDX Protocol**: Optimised delivery for graphics-heavy or latency-sensitive workloads (CAD, healthcare imaging, 3D rendering).
+* **Advanced Session Management**: Mature tools for reconnection, failover, and multi-site environments.
+* **Hybrid Flexibility**: Can span on-premises datacentres and Azure simultaneously.
+* **Ecosystem Add-ons**: App layering, profile management, and third-party integrations built over years.
 
 **Why It’s Good**
-- Still unmatched for complex, global, or graphics-heavy use cases.  
-- Strong option if you already have significant Citrix investment and skills.  
+
+* Still unmatched for complex, global, or graphics-heavy use cases.
+* Strong option if you already have significant Citrix investment and skills.
 
 **Reality Today**
-- For most knowledge-worker use cases (Office, Teams, web apps), AVD and Citrix deliver **similar user experience**. Bandwidth improvements and RDP enhancements mean Citrix no longer has a decisive UX advantage.  
-- Citrix licensing costs have increased sharply, causing many organisations to re-evaluate whether the premium is justified.  
-- **Active Directory Requirement**: Citrix environments typically still require certain servers and session hosts to be **domain-joined** (AD DS or Azure AD DS). By contrast, Native AVD supports **Entra ID join**, enabling a fully cloud-native deployment without traditional Active Directory.  
 
-**Best Fit**: Enterprises with niche workloads, hybrid dependencies, or existing AD-joined infrastructure that AVD/Nerdio cannot replace natively.  
+* For most knowledge-worker use cases (Office, Teams, web apps), AVD and Citrix deliver **similar user experience**. Bandwidth improvements and RDP enhancements mean Citrix no longer has a decisive UX advantage.
+* Citrix licensing costs have increased sharply, causing many organisations to re-evaluate whether the premium is justified.
+* **Active Directory Requirement**: Citrix environments typically still require certain servers and session hosts to be **domain-joined** (AD DS or Azure AD DS). By contrast, Native AVD supports **Entra ID join**, enabling a fully cloud-native deployment without traditional Active Directory.
 
----
+**Best Fit**: Enterprises with niche workloads, hybrid dependencies, or existing AD-joined infrastructure that AVD/Nerdio cannot replace natively.
+
+***
 
 ## Decision Guide: Match to DevOps Maturity
 
-| DevOps Maturity | Recommended Option | Why |
-|-----------------|-------------------|-----|
-| **High (IaC-first, CI/CD pipelines, Azure-native ops)** | **Native AVD** | Full control, lowest cost, fits existing DevOps practices. |
-| **Medium (some automation, want management out of the box)** | **Nerdio** | Built-in autoscaling, image lifecycle tools, cost optimisation. |
-| **Low (manual ops, complex legacy apps, global hybrid needs)** | **Citrix** | Mature enterprise VDI, but expensive and often overkill. |
+| DevOps Maturity                                                | Recommended Option | Why                                                             |
+| -------------------------------------------------------------- | ------------------ | --------------------------------------------------------------- |
+| **High (IaC-first, CI/CD pipelines, Azure-native ops)**        | **Native AVD**     | Full control, lowest cost, fits existing DevOps practices.      |
+| **Medium (some automation, want management out of the box)**   | **Nerdio**         | Built-in autoscaling, image lifecycle tools, cost optimisation. |
+| **Low (manual ops, complex legacy apps, global hybrid needs)** | **Citrix**         | Mature enterprise VDI, but expensive and often overkill.        |
 
----
+***
 
 ## Final Thoughts
 
-Today, the real question isn’t *“Which has the best end-user experience?”*—because for most scenarios, **AVD and Citrix are indistinguishable** to the user. The real question is:  
+Today, the real question isn’t *“Which has the best end-user experience?”*—because for most scenarios, **AVD and Citrix are indistinguishable** to the user. The real question is:
 
-- **Do you want to run virtual desktops as code?** If yes, go Native AVD.  
-- **Do you want automation without building it?** Go Nerdio.  
-- **Do you need hybrid or niche performance?** Citrix might still make sense, but rising costs are driving many to re-evaluate.  
+* **Do you want to run virtual desktops as code?** If yes, go Native AVD.
+* **Do you want automation without building it?** Go Nerdio.
+* **Do you need hybrid or niche performance?** Citrix might still make sense, but rising costs are driving many to re-evaluate.
 
-In practice, many Citrix customers use **Nerdio as the transition step**. It gives them automation and a simpler management layer, while bringing workloads natively into Azure without the licensing burden of Citrix.  
+In practice, many Citrix customers use **Nerdio as the transition step**. It gives them automation and a simpler management layer, while bringing workloads natively into Azure without the licensing burden of Citrix.
