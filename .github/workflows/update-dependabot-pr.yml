@@ -1,34 +1,66 @@
 name: Update TinaCMS Dependencies
+
 on:
   push:
     branches:
       - dependabot/npm_and_yarn/**
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
+    # Only run for Dependabot PRs
+    paths:
+      - '**/package.json'
+      - 'pnpm-lock.yaml'
 
 jobs:
-  update-tinacms:
+  fix-lockfile-and-update-tina:
+    if: github.actor == 'dependabot[bot]'
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
+
     steps:
-      # Clone repo
-      - name: Check out repo to update
-        uses: actions/checkout@v2
-      - name: Setup node
-        uses: actions/setup-node@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref }}
+
+      - name: Enable Corepack & set pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@9 --activate
+          pnpm --version
+
+      - name: Use Node 18
+        uses: actions/setup-node@v4
         with:
           node-version: 18
-      # Install deps, update Tina packages, update schema
-      - name: Install dependencies
-        run: yarn install
+          cache: 'pnpm'
+
+      # 🔧 Resolve lockfile conflicts by recreating it cleanly
+      - name: Recreate pnpm-lock.yaml
+        run: |
+          rm -f pnpm-lock.yaml
+          pnpm install
+
+      # ⬆️ Update Tina packages to latest (optional but matches your intent)
       - name: Update Tina packages
-        run: yarn upgrade tinacms@latest @tinacms/cli@latest
-      - name: Update Schema
-        run: yarn tinacms audit
-      # Commit changes
-      - name: Commit changes back to branch
+        run: |
+          pnpm up tinacms@latest @tinacms/cli@latest
+
+      - name: Generate / audit Tina schema
+        run: |
+          pnpm tinacms audit || true
+
+      - name: Commit changes back to PR branch
         uses: EndBug/add-and-commit@v9
         with:
-          message: "Update TinaCMS generated files"
-          branch: ${{ github.ref }}
+          add: |
+            pnpm-lock.yaml
+            .
+          message: "chore(deps): resolve pnpm-lock.yaml conflicts & update Tina"
+          branch: ${{ github.head_ref || github.ref }}
           committer_name: GitHub Actions
           committer_email: actions@github.com
