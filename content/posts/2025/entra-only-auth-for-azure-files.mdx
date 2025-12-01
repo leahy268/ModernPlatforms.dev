@@ -14,8 +14,7 @@ heroImage: "/images/blog/azure-files-entra-hero.png"
 
 # Cloud-Native Identity with Azure Files: A Game Changer for AVD & FSLogix
 
-Microsoft has released one of the most significant updates to Azure Virtual Desktop architecture in years:  
-**Azure Files now supports Entra ID–only authentication for SMB access (preview).**
+Microsoft has released one of the most significant updates to Azure Virtual Desktop architecture in years: Azure Files now supports Entra ID–only authentication for SMB access (preview).
 
 This means FSLogix profiles hosted in Azure Files no longer require:
 
@@ -36,7 +35,7 @@ Historically, FSLogix demanded a domain-joined identity backend for SMB access. 
 - Azure Files SMB only supported AD-backed identities  
 - Session hosts required domain credentials to authenticate  
 
-With this update, Azure Files can now authenticate SMB clients directly using **Entra ID OAuth tokens** — completely eliminating the need for legacy directory services.
+With this update, Azure Files can now authenticate SMB clients directly using Entra ID OAuth tokens—completely eliminating the need for legacy directory services.
 
 For AVD architects, this changes everything.
 
@@ -51,31 +50,28 @@ Azure Files now supports:
 - No reliance on Kerberos or NTLM  
 - Entra ID Joined VM support for FSLogix  
 - Token-based access that aligns with Zero Trust principles  
-- **Directory and file-level permissions configurable via the Azure Portal** (no more icacls from domain-joined machines!)
+- Directory and file-level permissions configurable via the Azure Portal (no more icacls from domain-joined machines!)
 
-This is the first time Microsoft officially supports **FSLogix profiles on Azure Files without ANY AD**.
+This is the first time Microsoft officially supports FSLogix profiles on Azure Files without any AD.
 
 ---
 
 ## Architecture: Before vs After
 
-### ❌ Before: FSLogix on Azure Files (Traditional Model)
+### 🏢 Before: FSLogix on Azure Files (Traditional Model)
 
 ![Traditional FSLogix architecture with AD dependency](/uploads/Blogs/azure-files-architecture-before.png)
 *Traditional architecture requiring domain controllers, Azure AD DS, or hybrid identity for FSLogix profile access.*
 
-### ✅ After: Cloud-Native FSLogix Using Entra ID Only (Preview)
+### ☁️ After: Cloud-Native FSLogix Using Entra ID Only (Preview)
 
 ![Cloud-native FSLogix architecture with Entra ID only](/uploads/Blogs/azure-files-architecture-after.png)
 *Simplified cloud-native architecture: Entra joined session hosts authenticate directly to Azure Files via OAuth tokens.*
 
 ---
 
-## How to Enable Microsoft Entra Kerberos Authentication
+## Before You Begin: Prerequisites
 
-### Prerequisites
-
-Before enabling Entra ID authentication, ensure you meet these requirements:
 
 **For Cloud-Only Identities (Preview):**
 - Windows 11 Enterprise/Pro (single or multi-session)
@@ -89,85 +85,22 @@ Before enabling Entra ID authentication, ensure you meet these requirements:
 - AD DS with Microsoft Entra Connect or Entra Connect cloud sync
 
 **Important Considerations:**
-- You can only use ONE identity source per storage account
+- You can only use one identity source per storage account
 - MFA must be disabled for the storage account's service principal
 - The `WinHTTP Web Proxy Auto-Discovery Service` must be running
 - The `IP Helper service (iphlpsvc)` must be running
 
-### Step 1: Enable Microsoft Entra Kerberos in the Azure Portal
+### Configuration Guide
 
-1. Sign in to the **Azure portal** and select your storage account
-2. Under **Data storage**, select **File shares**
-3. Next to **Identity-based access**, click the configuration status (e.g., "Not configured")
-4. Under **Microsoft Entra Kerberos**, select **Set up**
-5. Check the **Microsoft Entra Kerberos** checkbox
-6. *(Optional for hybrid identities)* Enter your on-premises AD domain name and GUID if you want to configure permissions via Windows File Explorer
-7. Click **Save**
+For the full step-by-step instructions, see the official Microsoft documentation:
 
-### Step 2: Grant Admin Consent to the Service Principal
+- [Enable Microsoft Entra Kerberos authentication](https://learn.microsoft.com/en-us/azure/storage/files/storage-files-identity-auth-hybrid-identities-enable)
+- [Assign share-level permissions](https://learn.microsoft.com/en-us/azure/storage/files/storage-files-identity-assign-share-level-permissions)
+- [Configure directory and file-level permissions](https://learn.microsoft.com/en-us/azure/storage/files/storage-files-identity-configure-file-level-permissions)
 
-After enabling Entra Kerberos, a new application is automatically registered in your Entra tenant:
+---
 
-1. Open **Microsoft Entra ID** in the Azure portal
-2. Navigate to **App registrations** → **All Applications**
-3. Find the application named: `[Storage Account] <your-storage-account-name>.file.core.windows.net`
-4. Go to **API permissions**
-5. Click **Grant admin consent for [Directory Name]** for the three requested permissions (openid, profile, User.Read)
-6. Confirm with **Yes**
-
-### Step 3: Enable Cloud-Only Groups Support (Required for Cloud-Only Identities)
-
-For cloud-only identities, you must update the application manifest to support Entra-only group SIDs:
-
-1. In the app registration, go to **Manifest**
-2. Update the Tags to include the required cloud-only groups configuration
-3. Save the manifest
-
-> ⚠️ **Note:** Kerberos tickets have a maximum of 1,010 SIDs. Ensure your combined on-premises and cloud group SIDs don't exceed this limit.
-
-### Step 4: Disable MFA for the Storage Account
-
-Microsoft Entra Kerberos doesn't support MFA for file share access. You must exclude the storage account app from MFA conditional access policies:
-
-1. In **Microsoft Entra ID**, go to **Security** → **Conditional Access**
-2. Edit your MFA policies
-3. Add an exclusion for: `[Storage Account] <your-storage-account-name>.file.core.windows.net`
-
-### Step 5: Assign Share-Level Permissions
-
-Configure RBAC permissions to control who can access each file share:
-
-- **Storage File Data SMB Share Reader** – Read access
-- **Storage File Data SMB Share Contributor** – Read, write, delete access
-- **Storage File Data SMB Share Elevated Contributor** – Read, write, delete, modify ACLs
-
-> 📝 **For cloud-only identities:** You can only assign a default share-level permission that applies to all authenticated identities.
-
-### Step 6: Configure Directory and File-Level Permissions (The Big Change! 🎉)
-
-**This is the game-changer:** You can now configure NTFS-style directory and file-level permissions directly in the Azure Portal—no need for icacls commands or domain-joined machines!
-
-For hybrid identities, you can still use Windows File Explorer from a domain-joined client if preferred, but the portal option removes this requirement for basic permission management.
-
-> ⚠️ **Current Limitation:** Configuring directory and file-level permissions using Windows File Explorer isn't currently supported for cloud-only identities—use the Azure Portal instead.
-
-### Step 7: Configure Client Machines for Kerberos Ticket Retrieval
-
-Enable cloud Kerberos ticket retrieval on each client machine using one of these methods:
-
-**Via Intune:**
-- Configure Policy CSP: `Kerberos/CloudKerberosTicketRetrievalEnabled` = `1`
-
-**Via Group Policy:**
-- Enable: `Administrative Templates > System > Kerberos > Allow retrieving the Azure AD Kerberos Ticket Granting Ticket during logon`
-
-**Via Registry:**
-```
-HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa\Kerberos\Parameters
-CloudKerberosTicketRetrievalEnabled = 1 (DWORD)
-```
-
-# 🔍 Why This Is a Breakthrough for AVD
+## 🔍 Why This Is a Breakthrough for AVD
 
 ### 1. Removes AD Dependency
 No more deploying and maintaining domain controllers or Azure AD Domain Services just for FSLogix. Your identity layer is fully managed by Microsoft Entra ID.
@@ -202,14 +135,14 @@ Token-based authentication with RBAC aligns perfectly with Zero Trust principles
 Before diving in, be aware of these current limitations:
 
 | Limitation | Details |
-|------------|---------|
-| **Windows Build Requirements** | Cloud-only requires Windows 11 or Server 2025; hybrid needs Win10 2004+ or Server 2022+ with specific KBs |
-| **Single Identity Source** | You can't mix Entra Kerberos with AD DS or Entra Domain Services on the same storage account |
-| **MFA Exclusion Required** | The storage account service principal must be excluded from MFA policies |
-| **Cloud-Only RBAC** | Cloud-only identities can only use default share-level permissions (no per-user/group RBAC yet) |
-| **File Explorer Permissions** | Configuring ACLs via Windows File Explorer isn't supported for cloud-only identities |
-| **External Identity Limits** | FSLogix on AVD is supported for external B2B users, but cross-cloud guests are not |
-| **Not Yet GA** | This is still in preview—expect changes before general availability |  
+|------------|----------|
+| Windows Build Requirements | Cloud-only requires Windows 11 or Server 2025; hybrid needs Win10 2004+ or Server 2022+ with specific KBs |
+| Single Identity Source | You can't mix Entra Kerberos with AD DS or Entra Domain Services on the same storage account |
+| MFA Exclusion Required | The storage account service principal must be excluded from MFA policies |
+| Cloud-Only RBAC | Cloud-only identities can only use default share-level permissions (no per-user/group RBAC yet) |
+| File Explorer Permissions | Configuring ACLs via Windows File Explorer isn't supported for cloud-only identities |
+| External Identity Limits | FSLogix on AVD is supported for external B2B users, but cross-cloud guests are not |
+| Not Yet GA | This is still in preview—expect changes before general availability |
 
 ---
 
@@ -264,15 +197,8 @@ This cmdlet performs basic checks on your Entra ID configuration and helps ident
 
 ## 📣 Final Thoughts
 
-This is the biggest identity improvement for AVD since Azure AD Join.  
-For the first time, you can build a **100% cloud-native AVD environment without any Active Directory dependency**.
+This is the biggest identity improvement for AVD since Azure AD Join. For the first time, you can build a 100% cloud-native AVD environment without any Active Directory dependency.
 
 The ability to configure directory and file-level permissions directly in the Azure Portal is a massive quality-of-life improvement—no more spinning up domain-joined jump boxes just to run icacls commands.
-
-**Next Steps:**
-- [Enable Microsoft Entra Kerberos authentication](https://learn.microsoft.com/en-us/azure/storage/files/storage-files-identity-auth-hybrid-identities-enable)
-- [Assign share-level permissions](https://learn.microsoft.com/en-us/azure/storage/files/storage-files-identity-assign-share-level-permissions)
-- [Configure directory and file-level permissions](https://learn.microsoft.com/en-us/azure/storage/files/storage-files-identity-configure-file-level-permissions)
-- [Create a profile container with Azure Files and Microsoft Entra ID](https://learn.microsoft.com/en-us/azure/virtual-desktop/create-profile-container-azure-ad)
 
 If you're planning a greenfield AVD deployment or looking to modernize an existing environment, this preview is worth evaluating today.
