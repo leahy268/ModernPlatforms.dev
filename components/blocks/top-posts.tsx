@@ -8,7 +8,7 @@ import { TinaMarkdown } from "tinacms/dist/rich-text";
 import type { Template } from "tinacms";
 import Link from "next/link";
 
-export default function LatestPosts({ numPosts = 4 }: { numPosts?: number }) {
+export default function LatestPosts({ numPosts = 9 }: { numPosts?: number }) {
   const [data, setData] = useState<PostConnection | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -37,11 +37,14 @@ export default function LatestPosts({ numPosts = 4 }: { numPosts?: number }) {
   return (
     <div className="max-w-6xl mx-auto px-4">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {data.edges.map((post) => (
+        {data.edges.map((post, index) => (
           <Link
             key={post.node.id}
             href={`/posts/` + post.node._sys.breadcrumbs.join("/")}
-            className="group block p-4 bg-white rounded-lg shadow flex items-start gap-4 transition hover:shadow-lg"
+            className={`group block p-4 bg-white rounded-lg shadow flex items-start gap-4 transition hover:shadow-lg
+              ${index >= 3 ? 'hidden md:flex' : ''}
+              ${index >= 6 ? 'md:hidden lg:flex' : ''}
+            `}
           >
             {/* Small Hero Image (Clickable) */}
             {post.node.heroImg && (
@@ -93,7 +96,7 @@ export const latestPostsBlockSchema: Template = {
     previewSrc: "/blocks/hero.png",
     defaultItem: {
       heading: "Latest Posts",
-      numPosts: 5,
+      numPosts: 9,
     },
   },
   fields: [
