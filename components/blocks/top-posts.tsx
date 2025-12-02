@@ -2,25 +2,89 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { PostConnection } from "@/tina/__generated__/types";
-import TopPosts  from "../../app/posts/topposts";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
 import type { Template } from "tinacms";
 import Link from "next/link";
 
+interface PostNode {
+  id: string;
+  title: string;
+  excerpt?: any;
+  heroImg?: string;
+  category?: string;
+  date?: string;
+  _sys: {
+    breadcrumbs: string[];
+  };
+}
+
+interface PostEdge {
+  cursor: string;
+  node: PostNode;
+}
+
+interface PostsData {
+  postConnection: {
+    totalCount: number;
+    edges: PostEdge[];
+  };
+}
+
+const POSTS_QUERY = `
+  query PostConnection($last: Float) {
+    postConnection(sort: "date", last: $last) {
+      totalCount
+      edges {
+        cursor
+        node {
+          id
+          title
+          excerpt
+          heroImg
+          category
+          date
+          _sys {
+            breadcrumbs
+          }
+        }
+      }
+    }
+  }
+`;
+
 export default function LatestPosts({ numPosts = 9 }: { numPosts?: number }) {
-  const [data, setData] = useState<PostConnection | null>(null);
+  const [data, setData] = useState<PostsData | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchPosts() {
       try {
-        console.log("📢 Fetching latest posts...");
+        console.log("📢 Fetching latest posts via GraphQL...");
         const branch = process.env.NEXT_PUBLIC_TINA_BRANCH || 'main';
-        const fetchedData = await TopPosts({ numPosts, branch });
+        const clientId = process.env.NEXT_PUBLIC_TINA_CLIENT_ID;
+        
+        const response = await fetch(
+          `https://content.tinajs.io/content/${clientId}/github/${branch}`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              query: POSTS_QUERY,
+              variables: { last: numPosts },
+            }),
+          }
+        );
 
-        if (fetchedData) {
-          setData(fetchedData); // ✅ Now setData gets valid PostConnection data
+        if (!response.ok) {
+          throw new Error('Failed to fetch posts');
+        }
+
+        const result = await response.json();
+
+        if (result.data) {
+          setData(result.data);
         }
       } catch (error) {
         console.error("❌ Error fetching latest posts:", error);
@@ -33,12 +97,12 @@ export default function LatestPosts({ numPosts = 9 }: { numPosts?: number }) {
   }, [numPosts]);
 
   if (loading) return <p>Loading latest posts...</p>;
-  if (!data?.edges || data.edges.length === 0) return <p>No posts found.</p>;
+  if (!data?.postConnection?.edges || data.postConnection.edges.length === 0) return <p>No posts found.</p>;
 
   return (
     <div className="max-w-6xl mx-auto px-4">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {data.edges.map((post, index) => (
+        {data.postConnection.edges.map((post, index) => (
           <Link
             key={post.node.id}
             href={`/posts/` + post.node._sys.breadcrumbs.join("/")}
