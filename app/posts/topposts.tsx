@@ -2,13 +2,21 @@ import client from "@/tina/__generated__/client";
 import { PostConnection, PostConnectionEdges, Post } from "@/tina/__generated__/types";
 
 
-export default async function TopPosts({ numPosts = 9 }: { numPosts?: number }) {
+export default async function TopPosts({ numPosts = 9, branch }: { numPosts?: number; branch?: string }) {
   console.log("⚡ Fetching TopPosts with numPosts:", numPosts);
+
+  const fetchOptions = branch ? {
+    fetchOptions: {
+      headers: {
+        'x-branch': branch,
+      }
+    }
+  } : undefined;
 
   let posts = await client.queries.postConnection({
     sort: "date",
     last: numPosts, 
-  });
+  }, fetchOptions);
 
   console.log("✅ Fetched posts count:", posts.data?.postConnection.edges.length);
 
