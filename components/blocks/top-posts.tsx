@@ -30,28 +30,6 @@ interface PostsData {
   };
 }
 
-const POSTS_QUERY = `
-  query PostConnection($last: Float) {
-    postConnection(sort: "date", last: $last) {
-      totalCount
-      edges {
-        cursor
-        node {
-          id
-          title
-          excerpt
-          heroImg
-          category
-          date
-          _sys {
-            breadcrumbs
-          }
-        }
-      }
-    }
-  }
-`;
-
 export default function LatestPosts({ numPosts = 9 }: { numPosts?: number }) {
   const [data, setData] = useState<PostsData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -59,23 +37,10 @@ export default function LatestPosts({ numPosts = 9 }: { numPosts?: number }) {
   useEffect(() => {
     async function fetchPosts() {
       try {
-        console.log("📢 Fetching latest posts via GraphQL...");
+        console.log("📢 Fetching latest posts...");
         const branch = process.env.NEXT_PUBLIC_TINA_BRANCH || 'main';
-        const clientId = process.env.NEXT_PUBLIC_TINA_CLIENT_ID;
         
-        const response = await fetch(
-          `https://content.tinajs.io/content/${clientId}/github/${branch}`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              query: POSTS_QUERY,
-              variables: { last: numPosts },
-            }),
-          }
-        );
+        const response = await fetch(`/api/posts?numPosts=${numPosts}&branch=${branch}`);
 
         if (!response.ok) {
           throw new Error('Failed to fetch posts');
@@ -83,8 +48,8 @@ export default function LatestPosts({ numPosts = 9 }: { numPosts?: number }) {
 
         const result = await response.json();
 
-        if (result.data) {
-          setData(result.data);
+        if (result && !result.error) {
+          setData(result);
         }
       } catch (error) {
         console.error("❌ Error fetching latest posts:", error);
