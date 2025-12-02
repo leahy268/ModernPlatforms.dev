@@ -16,7 +16,8 @@ export default function LatestPosts({ numPosts = 9 }: { numPosts?: number }) {
     async function fetchPosts() {
       try {
         console.log("📢 Fetching latest posts...");
-        const fetchedData = await TopPosts({ numPosts });
+        const branch = process.env.NEXT_PUBLIC_TINA_BRANCH || 'main';
+        const fetchedData = await TopPosts({ numPosts, branch });
 
         if (fetchedData) {
           setData(fetchedData); // ✅ Now setData gets valid PostConnection data

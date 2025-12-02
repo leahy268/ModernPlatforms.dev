@@ -37,13 +37,22 @@ export default async function PostPage({
 }
 
 export async function generateStaticParams() {
-  let posts = await client.queries.postConnection();
+  const branch = process.env.NEXT_PUBLIC_TINA_BRANCH || 'main';
+  const fetchOptions = {
+    fetchOptions: {
+      headers: {
+        'x-branch': branch,
+      }
+    }
+  };
+
+  let posts = await client.queries.postConnection({}, fetchOptions);
   const allPosts = posts;
 
   while (posts.data?.postConnection.pageInfo.hasNextPage) {
     posts = await client.queries.postConnection({
       after: posts.data.postConnection.pageInfo.endCursor,
-    });
+    }, fetchOptions);
     allPosts.data.postConnection.edges.push(...posts.data.postConnection.edges);
   }
 

@@ -5,24 +5,25 @@ import { cookies } from "next/headers";
 
 export default async function PostsPage() {
   const cookieStore = await cookies();
-  let posts = await client.queries.postConnection({
-    sort: "date",
-    },
-    {
-      fetchOptions: {
-        headers: {
-          'x-branch': cookieStore.get('x-branch')?.value || process.env.NEXT_PUBLIC_TINA_BRANCH || 'main',
-        }
+  const branch = cookieStore.get('x-branch')?.value || process.env.NEXT_PUBLIC_TINA_BRANCH || 'main';
+  const fetchOptions = {
+    fetchOptions: {
+      headers: {
+        'x-branch': branch,
       }
     }
-);
+  };
+
+  let posts = await client.queries.postConnection({
+    sort: "date",
+  }, fetchOptions);
   const allPosts = posts;
 
   while (posts.data?.postConnection.pageInfo.hasNextPage) {
     posts = await client.queries.postConnection({
       sort: "date",
       after: posts.data.postConnection.pageInfo.endCursor,
-    });
+    }, fetchOptions);
     allPosts.data.postConnection.edges.push(...posts.data.postConnection.edges);
   }
 
