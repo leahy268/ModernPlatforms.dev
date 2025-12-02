@@ -42,9 +42,9 @@ export async function GET(request: NextRequest) {
     const result = await client.request({
       query: POSTS_QUERY,
       variables: { last: numPosts },
-    });
+    }, {});
 
-    console.log('Tina result:', JSON.stringify(result, null, 2));
+    // console.log('Tina result:', JSON.stringify(result, null, 2));
 
     // The client.request returns { data: {...} }, so we need to check the structure
     const data = result?.data || result;
