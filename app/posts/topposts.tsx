@@ -2,7 +2,7 @@ import client from "@/tina/__generated__/client";
 import { PostConnection, PostConnectionEdges, Post } from "@/tina/__generated__/types";
 
 
-export default async function TopPosts({ numPosts = 4 }: { numPosts?: number }) {
+export default async function TopPosts({ numPosts = 9 }: { numPosts?: number }) {
   console.log("⚡ Fetching TopPosts with numPosts:", numPosts);
 
   let posts = await client.queries.postConnection({
