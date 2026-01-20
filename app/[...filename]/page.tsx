@@ -7,11 +7,12 @@ import { cookies } from "next/headers";
 export default async function Home({
   params,
 }: {
-  params: { filename: string[] };
+  params: Promise<{ filename: string[] }>;
 }) {
+  const { filename } = await params;
   const cookieStore = await cookies();
   const data = await client.queries.page({
-    relativePath: `${params.filename.join("/")}.mdx`,
+    relativePath: `${filename.join("/")}.mdx`,
   },
     {
       fetchOptions: {
