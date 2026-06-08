@@ -1,3 +1,6 @@
+packages:
+  - '.'
+
 overrides:
   '@babel/helpers@<7.26.10': '>=7.26.10'
   brace-expansion@>=1.0.0 <=1.1.11: '>=1.1.12'
