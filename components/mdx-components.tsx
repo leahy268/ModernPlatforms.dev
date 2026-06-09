@@ -119,7 +119,7 @@ export const components: Components<{
   },
   img: (props) => (
     <span className="flex items-center justify-center">
-      <Image src={props.url} alt={props.alt} width={500} height={500} />
+      <Image src={props.url} alt={props.alt ?? ""} width={500} height={500} />
     </span>
   ),
   mermaid({ value }) {
